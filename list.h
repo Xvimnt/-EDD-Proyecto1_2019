@@ -51,13 +51,25 @@ class arrayList
 {
 private:
   Day *head;
-  deuxData data;
 
 public:
   Day *getHead();
-  arrayList(deuxData data);
+  arrayList();
   void setHead(Day *node);
   void add(Day *node);
+};
+
+class Salones{
+  private:
+    Salon* head;
+    Salon* queue;
+
+  public:
+    Salon* getHead();
+    void setHead(Salon* node);
+    Salon* getQueue();
+    void setQueue(Salon* node);
+    void add(Salon* node);
 };
 
 #endif // LIST_H

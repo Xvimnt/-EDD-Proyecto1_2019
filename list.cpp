@@ -164,10 +164,10 @@ Day *arrayList::getHead()
 {
     return head;
 }
-arrayList::arrayList(deuxData data)
+
+arrayList::arrayList()
 {
     head = nullptr;
-    this->data = data;
 }
 
 void arrayList::setHead(Day *node)
@@ -211,3 +211,30 @@ void arrayList::add(Day *node)
         head = node;
     }
 }
+
+//-----------------Metodos de lla doubledlinkedlist de saloness---------
+
+    Salon* Salones::getHead(){
+        return head;
+    }
+    void Salones::setHead(Salon* node){
+        head = node;
+    }
+    Salon* Salones::getQueue(){
+        return queue;
+    }
+    void Salones::setQueue(Salon* node){
+        queue = node;
+    }
+    void Salones::add(Salon* node){
+        Salon* pointer = head;
+
+        if(pointer != nullptr){
+            
+        }else{
+            head = node;
+            queue = node;
+            head->setNext(queue);
+            queue->setPrevious(head);
+        }
+    }

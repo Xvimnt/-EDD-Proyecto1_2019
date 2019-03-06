@@ -109,3 +109,26 @@ deuxData Day::getData()
     return data;
 }
 
+//Here starts the methods for the salon
+
+Salon::Salon(deuxData data){
+    data = data;
+    next = nullptr;
+}
+      deuxData Salon::getData(){
+          return data;
+      }
+
+      void Salon::setNext(Salon* node){
+          next = node;
+      }
+      Salon* Salon::getNext(){
+          return next;
+      }
+
+      Salon* Salon::getPrevious(){
+          return previous;
+      }
+      void Salon::setPrevious(Salon* node){
+          previous = node;
+      }

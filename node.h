@@ -17,10 +17,16 @@ class Salon
 {
     private:
      deuxData data;
+     Salon* next;
+     Salon* previous;
 
      public:
       Salon(deuxData data);
       deuxData getData();
+      void setNext(Salon* node);
+      Salon* getNext();
+      Salon* getPrevious();
+      void setPrevious(Salon* node);
 };
 
 class Build{
