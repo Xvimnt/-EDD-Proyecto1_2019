@@ -2,6 +2,7 @@
 #define NODE_H
 #include <iostream>
 #include <string>
+#include <list>
 
 struct Data
 {
@@ -38,6 +39,7 @@ class Build
     Salon *salon;
     Build *up;
     Build *down;
+    std::list<Salon> salones;
 
   public:
     Build(deuxData data);
@@ -46,6 +48,7 @@ class Build
     Build *getDown();
     void setUp(Build *build);
     void setDown(Build *build);
+    std::list<Salon> getSalones();
 };
 
 //Defining Professor
@@ -86,12 +89,15 @@ class Day
   private:
     deuxData data;
     Day *next;
+    Matrix* matriz;
 
   public:
     Day(deuxData data);
     Day *getNext();
     void setNext(Day *node);
     deuxData getData();
+    Matrix* getMatrixNode();
+    void setMatrixNode(Matrix* node);
 };
 
 //Definiendo horarios
@@ -135,6 +141,20 @@ class cell
     cell *getRight();
     cell *getUp();
     cell *getDown();
+};
+
+//definiendo el nodo matriz
+class Matrix
+{
+  private:
+    Salon* firstRow;
+    schedule* firstCol;
+
+  public:
+    Salon* getFirstRow();
+    schedule* getFirstCol();
+    void setFirstRow(Salon* node);
+    void setFirstCol(schedule* node);
 };
 
 #endif // NODE_H

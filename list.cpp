@@ -287,7 +287,7 @@ void Horarios::Insert(schedule *node)
             else
             {
                 //Desenlaza el nodo arriba del puntero
-                schedule *up = pointer->getUp();
+                schedule *up = pointer->getPrevious();
                 up->setNext(node);
                 node->setPrevious(up);
             }
