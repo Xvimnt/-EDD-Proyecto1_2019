@@ -111,24 +111,103 @@ deuxData Day::getData()
 
 //Here starts the methods for the salon
 
-Salon::Salon(deuxData data){
+Salon::Salon(deuxData data)
+{
     data = data;
-    next = nullptr;
+    down = nullptr;
 }
-      deuxData Salon::getData(){
-          return data;
-      }
+deuxData Salon::getData()
+{
+    return data;
+}
 
-      void Salon::setNext(Salon* node){
-          next = node;
-      }
-      Salon* Salon::getNext(){
-          return next;
-      }
+void Salon::setNext(Salon *node)
+{
+    down = node;
+}
+Salon *Salon::getNext()
+{
+    return down;
+}
+cell *Salon::getRight()
+{
+    return right;
+}
+void Salon::setRight(cell *node)
+{
+    right = node;
+}
 
-      Salon* Salon::getPrevious(){
-          return previous;
-      }
-      void Salon::setPrevious(Salon* node){
-          previous = node;
-      }
+//metodos para los horarios
+schedule::schedule(deuxData data)
+{
+    this->data = data;
+}
+schedule *schedule::getNext()
+{
+    return next;
+}
+void schedule::setNext(schedule *node)
+{
+    next = node;
+}
+schedule *schedule::getPrevious()
+{
+    return previous;
+}
+void schedule::setPrevious(schedule *node)
+{
+    previous = node;
+}
+deuxData schedule::getData()
+{
+    return data;
+}
+cell *schedule::getLower()
+{
+    return down;
+}
+void schedule::setLower(cell *node)
+{
+    down = node;
+}
+
+//Metodos para la celda
+cell::cell(Course *curso, Professor *catedratico)
+{
+    curso = curso;
+    catedratico = catedratico;
+}
+void cell::setLeft(cell *node)
+{
+    left = node;
+}
+void cell::setRight(cell *node)
+{
+    right = node;
+}
+void cell::setUpper(cell *node)
+{
+    up = node;
+}
+void cell::setLower(cell *node)
+{
+    down = node;
+}
+
+cell *cell::getLeft()
+{
+    return left;
+}
+cell *cell::getRight()
+{
+    return right;
+}
+cell *cell::getUp()
+{
+    return up;
+}
+cell *cell::getDown()
+{
+    return down;
+}

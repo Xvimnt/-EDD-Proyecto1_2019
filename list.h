@@ -63,6 +63,7 @@ class Salones{
   private:
     Salon* head;
     Salon* queue;
+  
 
   public:
     Salon* getHead();
@@ -70,6 +71,22 @@ class Salones{
     Salon* getQueue();
     void setQueue(Salon* node);
     void add(Salon* node);
+  
+};
+
+class Horarios
+{
+private:
+  schedule *first;
+  schedule *last;
+
+public:
+  schedule *getFirst();
+  schedule *getLast();
+  void setFirst(schedule *node);
+  void setLast(schedule *node);
+  void add(deuxData node);
+  void Insert(schedule *node);
 };
 
 #endif // LIST_H

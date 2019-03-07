@@ -212,29 +212,115 @@ void arrayList::add(Day *node)
     }
 }
 
-//-----------------Metodos de lla doubledlinkedlist de saloness---------
+//-----------------Metodos de la lista ordenada de saloness---------
 
-    Salon* Salones::getHead(){
-        return head;
-    }
-    void Salones::setHead(Salon* node){
-        head = node;
-    }
-    Salon* Salones::getQueue(){
-        return queue;
-    }
-    void Salones::setQueue(Salon* node){
-        queue = node;
-    }
-    void Salones::add(Salon* node){
-        Salon* pointer = head;
+Salon *Salones::getHead()
+{
+    return head;
+}
+void Salones::setHead(Salon *node)
+{
+    head = node;
+}
 
-        if(pointer != nullptr){
-            
-        }else{
+void Salones::add(Salon *node)
+{
+    Salon *pointer = head;
+    Salon *deuxPointer = head->getNext();
+
+    if (pointer != nullptr)
+    {
+        if (node->getData().name < pointer->getData.name)
+        {
+            node->setNext(pointer);
             head = node;
-            queue = node;
-            head->setNext(queue);
-            queue->setPrevious(head);
+        }
+        else
+        {
+            while (deuxPointer)
+            {
+                if (node->getData().name < deuxPointer->getData.name)
+                {
+                    pointer->setNext(node);
+                    node->setNext(deuxPointer);
+                    return;
+                }
+                else
+                {
+                    pointer = pointer->getNext();
+                    deuxPointer = deuxPointer->getNext();
+                }
+            }
+            pointer->setNext(node);
         }
     }
+    else
+    {
+        head = node;
+    }
+}
+
+//Definiendo doubled linked list de horarios--------------------
+
+void Horarios::setFirst(schedule *node)
+{
+    first = node;
+}
+
+void Horarios::setLast(schedule *node)
+{
+    last = node;
+}
+
+void Horarios::Insert(schedule *node)
+{
+    schedule *pointer = first;
+
+    while (pointer)
+    {
+        if (node->getData().name < pointer->getData().name)
+        {
+            if (pointer == first)
+            {
+                first = node;
+            }
+            else
+            {
+                //Desenlaza el nodo arriba del puntero
+                schedule *up = pointer->getUp();
+                up->setNext(node);
+                node->setPrevious(up);
+            }
+
+            //Setea los apuntadores para el nuevo nodo
+            node->setNext(pointer);
+            pointer->setPrevious(node);
+
+            return;
+        }
+        else
+        {
+            pointer = pointer->getNext();
+        }
+    }
+    node->setPrevious(pointer);
+    pointer->setNext(node);
+    last = node;
+}
+
+void Horarios::add(deuxData node)
+{
+    schedule *temp = new schedule(node);
+
+    if (first != nullptr)
+    {
+        Insert(temp);
+    }
+    else
+    {
+        first = temp;
+        last = temp;
+        temp->setPrevious(nullptr);
+        temp->setNext(nullptr);
+    }
+}
