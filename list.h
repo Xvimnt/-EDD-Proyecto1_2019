@@ -15,6 +15,8 @@ public:
   Professor *getRoot();
   void setRoot(Professor *professor);
   void Insert(Professor *professor, Professor *pointer);
+  std::string* getGraphic();
+  std::string* getGraphic(Professor* node , std::string* result);
 };
 
 class CircularList
@@ -30,6 +32,7 @@ public:
   Course *getLast();
   void setFirst(Course *node);
   void setLast(Course *node);
+  std::string getGraphic();
 };
 
 class doubleLinkedList
@@ -45,6 +48,7 @@ public:
   void setLast(Build *node);
   void add(deuxData node);
   void Insert(Build *node);
+   std::string getGraphic();
 };
 
 class arrayList
@@ -57,6 +61,7 @@ public:
   arrayList();
   void setHead(Day *node);
   void add(Day *node);
+   std::string getGraphic();
 };
 
 class Salones{
@@ -71,7 +76,7 @@ class Salones{
     Salon* getQueue();
     void setQueue(Salon* node);
     void add(Salon* node);
-  
+   std::string getGraphic();
 };
 
 class Horarios
@@ -87,6 +92,7 @@ public:
   void setLast(schedule *node);
   void add(deuxData node);
   void Insert(schedule *node);
+   std::string getGraphic();
 };
 
 #endif // LIST_H

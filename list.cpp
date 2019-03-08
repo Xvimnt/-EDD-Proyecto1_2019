@@ -59,6 +59,37 @@ void BinaryTree::setRoot(Professor *professor)
     root = professor;
 }
 
+std::string* BinaryTree::getGraphic(){
+    std::string* result;
+    return getGraphic(root, result);
+}
+
+std::string* BinaryTree::getGraphic(Professor* node , std::string* result){
+
+        result->append(node->getData().id);
+        result->append("[ label = \" ");
+        result->append(node->getData().name);
+        result->append("\" ];\n");
+
+        Professor* izq = node->getLeft();
+        Professor* der = node->getRight();
+
+        if(izq != nullptr){
+            result->append(node->getData().id);
+            result->append(":C0->");
+            result->append(izq->getData().id);
+            getGraphic(izq, result);
+        }
+        if(der != nullptr){
+            result->append(node->getData().id);
+            result->append(":C1->");
+            result->append(der->getData().id);
+            getGraphic(der, result);
+        }
+    
+    return result;
+}
+
 //---------------Metodos de la lista circular--------------
 CircularList::CircularList()
 {
@@ -91,6 +122,20 @@ void CircularList::add(Data data)
         last = temp;
         temp->setNext(temp);
     }
+}
+
+std::string CircularList::getGraphic(){
+    std::string result;
+    Course* pointer = first;
+
+    while(pointer != last){
+        result.append(pointer->getData().id);
+        result.append(" ");
+        result.append(pointer->getData().name);
+        result.append("\n");
+        pointer = pointer->getNext();
+    }
+    return result;
 }
 
 // ----------------Metodos de lista doblemente enlazada----------
@@ -158,6 +203,20 @@ void doubleLinkedList::add(deuxData node)
     }
 }
 
+std::string doubleLinkedList::getGraphic(){
+    std::string result;
+    
+    Build* pointer = first;
+
+    while(pointer){
+        result.append(pointer->getData().name);
+        result.append("\n");
+        pointer->getDown();
+    }
+
+    return result;
+}
+
 //------------------------------Metodos de lista simple ordenada------------------
 
 Day *arrayList::getHead()
@@ -212,6 +271,19 @@ void arrayList::add(Day *node)
     }
 }
 
+std::string arrayList::getGraphic(){
+    std::string result;
+    Day* pointer = head;
+
+    while(pointer){
+        result.append(pointer->getData().name);
+        result.append("\n");
+        pointer->getNext();
+    }
+
+    return result;
+}
+
 //-----------------Metodos de la lista ordenada de saloness---------
 
 Salon *Salones::getHead()
@@ -258,6 +330,19 @@ void Salones::add(Salon *node)
     {
         head = node;
     }
+}
+
+std::string Salones::getGraphic(){
+    std::string result;
+    Salon* pointer = head;
+
+    while(pointer){
+        result.append(pointer->getData().name);
+        result.append("\n");
+        pointer->getNext();
+    }
+
+    return result;
 }
 
 //Definiendo doubled linked list de horarios--------------------
@@ -323,4 +408,17 @@ void Horarios::add(deuxData node)
         temp->setPrevious(nullptr);
         temp->setNext(nullptr);
     }
+}
+
+std::string Horarios::getGraphic(){
+    std::string result;
+    schedule* pointer = first;
+
+    while(pointer){
+        result.append(pointer->getData().name);
+        result.append("\n");
+        pointer->getNext();
+    }
+
+    return result;
 }
