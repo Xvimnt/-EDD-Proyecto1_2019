@@ -237,8 +237,25 @@ std::string doubleLinkedList::getGraphic()
         result.append("\" ];\n");
 
         Build *temp = pointer->getDown();
-        result.append(pointer->getData().name + count + "->" + temp->getData().name + (count + 1) + "\n");
+        if(temp != nullptr){
+            result.append(pointer->getData().name);
+            result.append("" + count);
+            result.append("->" + temp->getData().name);
+            result.append( "" + (count + 1));
+            result.append("\n");
+        }
+
+        Build *previTemp = pointer->getUp();
+        if(previTemp != nullptr){
+            result.append(pointer->getData().name);
+            result.append("" + count);
+            result.append("->" + previTemp->getData().name);
+            result.append( "" + (count - 1));
+            result.append("\n");
+        }
+
         count++;
+        pointer = temp;
     }
     result.append("\n}");
     return result;
@@ -314,7 +331,11 @@ std::string arrayList::getGraphic()
         result.append("\" ];\n");
 
         Day *temp = pointer->getNext();
-        result.append(pointer->getData().name + count + "->" + temp->getData().name + (count + 1) + "\n");
+        result.append(pointer->getData().name);
+        result.append("" + count);
+        result.append("->" + temp->getData().name);
+        result.append( "" + (count + 1));
+        result.append("\n");
         count++;
 
         pointer = temp;
@@ -323,7 +344,7 @@ std::string arrayList::getGraphic()
     return result;
 }
 
-//-----------------Metodos de la lista ordenada de saloness---------
+//-----------------Metodos de la lista ordenada de salones---------
 
 Salon *Salones::getHead()
 {
@@ -376,11 +397,26 @@ std::string Salones::getGraphic()
     std::string result;
     Salon *pointer = head;
 
+    int count = 0;
+
     while (pointer)
     {
         result.append(pointer->getData().name);
+        result.append("" + count);
+        result.append(" ");
+        result.append("[ label = \" ");
+        result.append(pointer->getData().name);
+        result.append("\" ];\n");
+
+        Salon *temp = pointer->getNext();
+        result.append(pointer->getData().name);
+        result.append("" + count);
+        result.append("->" + temp->getData().name);
+        result.append( "" + (count + 1));
         result.append("\n");
-        pointer->getNext();
+        count++;
+
+        pointer = temp;
     }
 
     return result;
