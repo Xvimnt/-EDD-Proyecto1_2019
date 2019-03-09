@@ -15,7 +15,7 @@ public:
   Professor *getRoot();
   void setRoot(Professor *professor);
   void Insert(Professor *professor, Professor *pointer);
-  std::string* getGraphic();
+  std::string getGraphic();
   std::string* getGraphic(Professor* node , std::string* result);
 };
 

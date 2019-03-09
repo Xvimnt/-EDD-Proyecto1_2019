@@ -59,34 +59,41 @@ void BinaryTree::setRoot(Professor *professor)
     root = professor;
 }
 
-std::string* BinaryTree::getGraphic(){
-    std::string* result;
-    return getGraphic(root, result);
+std::string BinaryTree::getGraphic()
+{
+    std::string result;
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = cicrcle, style = filled, fillcolor = seashell2];\n");
+    result.append(*getGraphic(root, &result));
+    result.append("\n}");
+
+    return result;
 }
 
-std::string* BinaryTree::getGraphic(Professor* node , std::string* result){
+std::string *BinaryTree::getGraphic(Professor *node, std::string *result)
+{
+    result->append(node->getData().id);
+    result->append("[ label = \" ");
+    result->append(node->getData().name);
+    result->append("\" ];\n");
 
+    Professor *izq = node->getLeft();
+    Professor *der = node->getRight();
+
+    if (izq != nullptr)
+    {
         result->append(node->getData().id);
-        result->append("[ label = \" ");
-        result->append(node->getData().name);
-        result->append("\" ];\n");
+        result->append(":C0->");
+        result->append(izq->getData().id);
+        getGraphic(izq, result);
+    }
+    if (der != nullptr)
+    {
+        result->append(node->getData().id);
+        result->append(":C1->");
+        result->append(der->getData().id);
+        getGraphic(der, result);
+    }
 
-        Professor* izq = node->getLeft();
-        Professor* der = node->getRight();
-
-        if(izq != nullptr){
-            result->append(node->getData().id);
-            result->append(":C0->");
-            result->append(izq->getData().id);
-            getGraphic(izq, result);
-        }
-        if(der != nullptr){
-            result->append(node->getData().id);
-            result->append(":C1->");
-            result->append(der->getData().id);
-            getGraphic(der, result);
-        }
-    
     return result;
 }
 
@@ -124,17 +131,27 @@ void CircularList::add(Data data)
     }
 }
 
-std::string CircularList::getGraphic(){
+std::string CircularList::getGraphic()
+{
     std::string result;
-    Course* pointer = first;
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n");
 
-    while(pointer != last){
+    Course *pointer = first;
+
+    while (pointer != last)
+    {
         result.append(pointer->getData().id);
         result.append(" ");
+        result.append("[ label = \" ");
         result.append(pointer->getData().name);
-        result.append("\n");
-        pointer = pointer->getNext();
+        result.append("\" ];\n");
+
+        Course *temp = pointer->getNext();
+        result.append(pointer->getData().id + "->" + temp->getData().id) + "\n";
+        pointer = temp;
     }
+
+    result.append("\n}");
     return result;
 }
 
@@ -203,17 +220,27 @@ void doubleLinkedList::add(deuxData node)
     }
 }
 
-std::string doubleLinkedList::getGraphic(){
+std::string doubleLinkedList::getGraphic()
+{
     std::string result;
-    
-    Build* pointer = first;
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n");
+    Build *pointer = first;
+    int count = 0;
 
-    while(pointer){
+    while (pointer)
+    {
         result.append(pointer->getData().name);
-        result.append("\n");
-        pointer->getDown();
-    }
+        result.append("" + count);
+        result.append(" ");
+        result.append("[ label = \" ");
+        result.append(pointer->getData().name);
+        result.append("\" ];\n");
 
+        Build *temp = pointer->getDown();
+        result.append(pointer->getData().name + count + "->" + temp->getData().name + (count + 1) + "\n");
+        count++;
+    }
+    result.append("\n}");
     return result;
 }
 
@@ -271,14 +298,26 @@ void arrayList::add(Day *node)
     }
 }
 
-std::string arrayList::getGraphic(){
+std::string arrayList::getGraphic()
+{
     std::string result;
-    Day* pointer = head;
+    Day *pointer = head;
+    int count = 0;
 
-    while(pointer){
+    while (pointer)
+    {
         result.append(pointer->getData().name);
-        result.append("\n");
-        pointer->getNext();
+        result.append("" + count);
+        result.append(" ");
+        result.append("[ label = \" ");
+        result.append(pointer->getData().name);
+        result.append("\" ];\n");
+
+        Day *temp = pointer->getNext();
+        result.append(pointer->getData().name + count + "->" + temp->getData().name + (count + 1) + "\n");
+        count++;
+
+        pointer = temp;
     }
 
     return result;
@@ -332,11 +371,13 @@ void Salones::add(Salon *node)
     }
 }
 
-std::string Salones::getGraphic(){
+std::string Salones::getGraphic()
+{
     std::string result;
-    Salon* pointer = head;
+    Salon *pointer = head;
 
-    while(pointer){
+    while (pointer)
+    {
         result.append(pointer->getData().name);
         result.append("\n");
         pointer->getNext();
@@ -410,11 +451,13 @@ void Horarios::add(deuxData node)
     }
 }
 
-std::string Horarios::getGraphic(){
+std::string Horarios::getGraphic()
+{
     std::string result;
-    schedule* pointer = first;
+    schedule *pointer = first;
 
-    while(pointer){
+    while (pointer)
+    {
         result.append(pointer->getData().name);
         result.append("\n");
         pointer->getNext();
