@@ -9,15 +9,14 @@ BinaryTree::BinaryTree()
 
 void BinaryTree::add(Data data)
 {
-    Professor *root = getRoot();
     Professor *temp = new Professor(data);
-    if (root != nullptr)
+    if (this->getRoot() != nullptr)
     {
         Insert(temp, root);
     }
     else
     {
-        setRoot(temp);
+        this->setRoot(temp);
     }
 }
 
@@ -62,38 +61,45 @@ void BinaryTree::setRoot(Professor *professor)
 std::string BinaryTree::getGraphic()
 {
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = cicrcle, style = filled, fillcolor = seashell2];\n");
-    result.append(*getGraphic(root, &result));
-    result.append("\n}");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = cicrcle, style = filled, fillcolor = seashell2];\n ");
+    result.append( getGraphic2(getRoot()));
+    
+    result.append(" \n }");
 
     return result;
 }
 
-std::string *BinaryTree::getGraphic(Professor *node, std::string *result)
+std::string BinaryTree::getGraphic2(Professor *node)
 {
-    result->append(node->getData().id);
-    result->append("[ label = \" ");
-    result->append(node->getData().name);
-    result->append("\" ];\n");
+    std::string result;
 
-    Professor *izq = node->getLeft();
-    Professor *der = node->getRight();
+    if(node != nullptr){
+        result.append(" \n ");
+        result.append(node->getData().id);
+        result.append("[ label = \" ");
+        result.append((std::string)node->getData().name);
+        result.append("\" ];");
 
-    if (izq != nullptr)
-    {
-        result->append(node->getData().id);
-        result->append(":C0->");
-        result->append(izq->getData().id);
-        getGraphic(izq, result);
+        Professor *izq = node->getLeft();
+        Professor *der = node->getRight();
+
+        if (izq != nullptr)
+        {
+            result.append(" \n ");
+            result.append(node->getData().id);
+            result.append(":C0->");
+            result.append(izq->getData().id);
+            result.append(getGraphic2(izq));
+        }
+        if (der != nullptr)
+        {
+            result.append(" \n ");
+            result.append(node->getData().id);
+            result.append(":C1->");
+            result.append(der->getData().id);
+            result.append(getGraphic2(der));
+        }
     }
-    if (der != nullptr)
-    {
-        result->append(node->getData().id);
-        result->append(":C1->");
-        result->append(der->getData().id);
-        getGraphic(der, result);
-    }
-
     return result;
 }
 
@@ -133,25 +139,31 @@ void CircularList::add(Data data)
 
 std::string CircularList::getGraphic()
 {
+    if(first == nullptr) return "null";
+
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];");
 
     Course *pointer = first;
-
-    while (pointer != last)
-    {
+    Course *flag;
+    
+    do 
+    {   
+        result.append(" \n ");
         result.append(pointer->getData().id);
         result.append(" ");
         result.append("[ label = \" ");
         result.append(pointer->getData().name);
-        result.append("\" ];\n");
+        result.append(" \" ]; \n ");
 
         Course *temp = pointer->getNext();
-        result.append(pointer->getData().id + "->" + temp->getData().id) + "\n";
+        result.append(pointer->getData().id + "->" + temp->getData().id);
+        flag = pointer;
         pointer = temp;
-    }
+        
+    } while (flag != last);
 
-    result.append("\n}");
+    result.append(" \n }");
     return result;
 }
 
@@ -171,13 +183,15 @@ void doubleLinkedList::Insert(Build *node)
 {
     Build *pointer = first;
 
-    while (pointer)
+    while (pointer != last)
     {
+        std::cout << "pasando una vez por el ciclo" << std::endl;
         if (node->getData().name < pointer->getData().name)
         {
             if (pointer == first)
             {
                 first = node;
+                node->setUp(nullptr);
             }
             else
             {
@@ -196,11 +210,13 @@ void doubleLinkedList::Insert(Build *node)
         else
         {
             pointer = pointer->getDown();
+          
         }
     }
+    last = node;
+    node->setDown(nullptr);
     node->setUp(pointer);
     pointer->setDown(node);
-    last = node;
 }
 
 void doubleLinkedList::add(deuxData node)
@@ -223,41 +239,33 @@ void doubleLinkedList::add(deuxData node)
 std::string doubleLinkedList::getGraphic()
 {
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];");
     Build *pointer = first;
-    int count = 0;
 
     while (pointer)
     {
+        result.append(" \n ");
         result.append(pointer->getData().name);
-        result.append("" + count);
-        result.append(" ");
         result.append("[ label = \" ");
         result.append(pointer->getData().name);
-        result.append("\" ];\n");
+        result.append("\" ];");
 
         Build *temp = pointer->getDown();
         if(temp != nullptr){
+            result.append(" \n ");
             result.append(pointer->getData().name);
-            result.append("" + count);
-            result.append("->" + temp->getData().name);
-            result.append( "" + (count + 1));
-            result.append("\n");
+            result.append(" -> " + temp->getData().name);
         }
 
         Build *previTemp = pointer->getUp();
         if(previTemp != nullptr){
+            result.append(" \n ");
             result.append(pointer->getData().name);
-            result.append("" + count);
-            result.append("->" + previTemp->getData().name);
-            result.append( "" + (count - 1));
-            result.append("\n");
+            result.append(" -> " + previTemp->getData().name);
         }
-
-        count++;
         pointer = temp;
     }
-    result.append("\n}");
+    result.append(" \n }");
     return result;
 }
 
@@ -278,14 +286,15 @@ void arrayList::setHead(Day *node)
     head = node;
 }
 
-void arrayList::add(Day *node)
+void arrayList::add(deuxData data)
 {
+    Day* node = new Day(data);
     Day *pointer = head;
     Day *deuxPointer = head->getNext();
 
     if (pointer != nullptr)
     {
-        if (node->getData().name < pointer->getData.name)
+        if (node->getData().name < pointer->getData().name)
         {
             node->setNext(pointer);
             head = node;
@@ -294,7 +303,7 @@ void arrayList::add(Day *node)
         {
             while (deuxPointer)
             {
-                if (node->getData().name < deuxPointer->getData.name)
+                if (node->getData().name < deuxPointer->getData().name)
                 {
                     pointer->setNext(node);
                     node->setNext(deuxPointer);
@@ -362,7 +371,7 @@ void Salones::add(Salon *node)
 
     if (pointer != nullptr)
     {
-        if (node->getData().name < pointer->getData.name)
+        if (node->getData().name < pointer->getData().name)
         {
             node->setNext(pointer);
             head = node;
@@ -371,7 +380,7 @@ void Salones::add(Salon *node)
         {
             while (deuxPointer)
             {
-                if (node->getData().name < deuxPointer->getData.name)
+                if (node->getData().name < deuxPointer->getData().name)
                 {
                     pointer->setNext(node);
                     node->setNext(deuxPointer);
@@ -438,13 +447,15 @@ void Horarios::Insert(schedule *node)
 {
     schedule *pointer = first;
 
-    while (pointer)
+    while (pointer != last)
     {
+        std::cout << "pasando una vez por el ciclo" << std::endl;
         if (node->getData().name < pointer->getData().name)
         {
             if (pointer == first)
             {
                 first = node;
+                node->setPrevious(nullptr);
             }
             else
             {
@@ -463,11 +474,13 @@ void Horarios::Insert(schedule *node)
         else
         {
             pointer = pointer->getNext();
+          
         }
     }
+    last = node;
+    node->setNext(nullptr);
     node->setPrevious(pointer);
     pointer->setNext(node);
-    last = node;
 }
 
 void Horarios::add(deuxData node)
@@ -490,14 +503,40 @@ void Horarios::add(deuxData node)
 std::string Horarios::getGraphic()
 {
     std::string result;
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n");
     schedule *pointer = first;
+    int count = 0;
 
     while (pointer)
     {
         result.append(pointer->getData().name);
-        result.append("\n");
-        pointer->getNext();
-    }
+        result.append("" + count);
+        result.append(" ");
+        result.append("[ label = \" ");
+        result.append(pointer->getData().name);
+        result.append("\" ];\n");
 
+        schedule *temp = pointer->getNext();
+        if(temp != nullptr){
+            result.append(pointer->getData().name);
+            result.append("" + count);
+            result.append("->" + temp->getData().name);
+            result.append( "" + (count + 1));
+            result.append("\n");
+        }
+
+        schedule *previTemp = pointer->getPrevious();
+        if(previTemp != nullptr){
+            result.append(pointer->getData().name);
+            result.append("" + count);
+            result.append("->" + previTemp->getData().name);
+            result.append( "" + (count - 1));
+            result.append("\n");
+        }
+
+        count++;
+        pointer = temp;
+    }
+    result.append("\n}");
     return result;
 }

@@ -24,7 +24,7 @@ void Professor::setLeft(Professor *node)
 
 Professor::Professor(Data data)
 {
-    data = data;
+    this->data = data;
     left = nullptr;
     right = nullptr;
 }
@@ -82,10 +82,12 @@ void Build::setUp(Build *build)
 {
     up = build;
 }
+
 void Build::setDown(Build *build)
 {
     down = build;
 }
+
 std::list<Salon> Build::getSalones()
 {
     return salones;

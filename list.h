@@ -16,7 +16,7 @@ public:
   void setRoot(Professor *professor);
   void Insert(Professor *professor, Professor *pointer);
   std::string getGraphic();
-  std::string* getGraphic(Professor* node , std::string* result);
+  std::string getGraphic2(Professor* node );
 };
 
 class CircularList
@@ -60,7 +60,7 @@ public:
   Day *getHead();
   arrayList();
   void setHead(Day *node);
-  void add(Day *node);
+  void add(deuxData data);
    std::string getGraphic();
 };
 

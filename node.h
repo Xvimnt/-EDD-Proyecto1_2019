@@ -4,6 +4,9 @@
 #include <string>
 #include <list>
 
+class cell;
+class Matrix;
+
 struct Data
 {
     std::string id;
@@ -78,6 +81,7 @@ class Course
 
   public:
     Course(Data data);
+    void setProfessor(Professor* node);
     void setNext(Course *node);
     Course *getNext();
     Data getData();
