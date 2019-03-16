@@ -76,7 +76,7 @@ class Salones{
     void setHead(Salon* node);
     Salon* getQueue();
     void setQueue(Salon* node);
-    void add(Salon* node);
+    void add(deuxData data);
    std::string getGraphic();
 };
 

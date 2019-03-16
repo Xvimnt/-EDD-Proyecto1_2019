@@ -350,31 +350,29 @@ void arrayList::add(deuxData data)
 std::string arrayList::getGraphic()
 {
     std::string result;
-
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2]; ");
     Day *pointer = head;
-    int count = 0;
 
-    if(head != nullptr){
-        while (pointer)
-        {
-            result.append("\n");
-            result.append(pointer->getData().name);
-            result.append("[ label = \" ");
-            result.append(pointer->getData().name);
-            result.append("\" ];");
+    while (pointer != nullptr)
+    {
+        result.append(" \n ");
+        result.append(pointer->getData().name);
+        result.append("[ label = \" ");
+        result.append(pointer->getData().name);
+        result.append("\" ];");
 
-            Day *temp = pointer->getNext();
-            result.append("\n");
+        Day *temp = pointer->getNext();
+        if(temp != nullptr){
+            std::cout << "apuntando a " << temp->getData().name << std::endl;
+            result.append(" \n ");
             result.append(pointer->getData().name);
-            result.append("" + count);
             result.append("->" + temp->getData().name);
-            result.append( "" + (count + 1));
-            
-            count++;
-
-            pointer = temp;
         }
+        pointer = temp;
     }
+
+    result.append(" \n ");
+    result.append("}");
 
     return result;
 }
@@ -390,37 +388,35 @@ void Salones::setHead(Salon *node)
     head = node;
 }
 
-void Salones::add(Salon *node)
+void Salones::add(deuxData data)
 {
+    Salon* node = new Salon(data);
     Salon *pointer = head;
-    Salon *deuxPointer = head->getNext();
+    Salon *previous;
 
     if (pointer != nullptr)
     {
-        if (node->getData().name < pointer->getData().name)
+        
+        if( data.name < pointer->getData().name)
         {
+            head = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
             node->setNext(pointer);
-            head = node;
         }
         else
         {
-            while (deuxPointer)
-            {
-                if (node->getData().name < deuxPointer->getData().name)
+            do{
+                previous = pointer;
+                pointer = pointer->getNext();
+                if(pointer == nullptr)
                 {
-                    pointer->setNext(node);
-                    node->setNext(deuxPointer);
+                    previous->setNext(node);
                     return;
                 }
-                else
-                {
-                    pointer = pointer->getNext();
-                    deuxPointer = deuxPointer->getNext();
-                }
-            }
-            pointer->setNext(node);
+            }while(data.name > pointer->getData().name);
+            previous->setNext(node);
+            node->setNext(pointer);
         }
-    }
+    }        
     else
     {
         head = node;
@@ -470,29 +466,27 @@ void Horarios::setLast(schedule *node)
 void Horarios::Insert(schedule *node)
 {
     schedule *pointer = first;
-
+    if (node->getData().name < pointer->getData().name)
+        {
+            first = node;
+            node->setPrevious(nullptr);
+            node->setNext(pointer);
+            pointer->setPrevious(node);
+            return;
+        }
+        
     while (pointer != last)
     {
-        std::cout << "pasando una vez por el ciclo" << std::endl;
         if (node->getData().name < pointer->getData().name)
         {
-            if (pointer == first)
-            {
-                first = node;
-                node->setPrevious(nullptr);
-            }
-            else
-            {
                 //Desenlaza el nodo arriba del puntero
                 schedule *up = pointer->getPrevious();
                 up->setNext(node);
                 node->setPrevious(up);
-            }
 
             //Setea los apuntadores para el nuevo nodo
             node->setNext(pointer);
             pointer->setPrevious(node);
-
             return;
         }
         else
@@ -527,40 +521,32 @@ void Horarios::add(deuxData node)
 std::string Horarios::getGraphic()
 {
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];");
     schedule *pointer = first;
-    int count = 0;
 
     while (pointer)
     {
+        result.append(" \n ");
         result.append(pointer->getData().name);
-        result.append("" + count);
-        result.append(" ");
         result.append("[ label = \" ");
         result.append(pointer->getData().name);
-        result.append("\" ];\n");
+        result.append("\" ];");
 
         schedule *temp = pointer->getNext();
         if(temp != nullptr){
+            result.append(" \n ");
             result.append(pointer->getData().name);
-            result.append("" + count);
-            result.append("->" + temp->getData().name);
-            result.append( "" + (count + 1));
-            result.append("\n");
+            result.append(" -> " + temp->getData().name);
         }
 
         schedule *previTemp = pointer->getPrevious();
         if(previTemp != nullptr){
+            result.append(" \n ");
             result.append(pointer->getData().name);
-            result.append("" + count);
-            result.append("->" + previTemp->getData().name);
-            result.append( "" + (count - 1));
-            result.append("\n");
+            result.append(" -> " + previTemp->getData().name);
         }
-
-        count++;
         pointer = temp;
     }
-    result.append("\n}");
+    result.append(" \n }");
     return result;
 }
