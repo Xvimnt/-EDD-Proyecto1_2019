@@ -98,6 +98,7 @@ std::list<Salon> Build::getSalones()
 Day::Day(deuxData data)
 {
     this->data = data;
+    this->next = nullptr;
 }
 
 Day *Day::getNext()

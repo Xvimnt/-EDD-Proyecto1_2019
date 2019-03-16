@@ -141,9 +141,8 @@ std::string practica1::getGraphic( const std::string& choice)
     return "opcion invalida";
 }
 
-std::string practica1::newDay(const std::string& choice){
-  deuxData day = new deuxData();
-  
-  dias.add(day);
+std::string practica1::newDay(const deuxData& data)
+{
+  dias.add(data);
   return "ok";
 }

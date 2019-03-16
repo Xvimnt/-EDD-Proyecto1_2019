@@ -61,6 +61,7 @@ public:
   arrayList();
   void setHead(Day *node);
   void add(deuxData data);
+  int getOrder(std::string dayName);
    std::string getGraphic();
 };
 

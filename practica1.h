@@ -26,7 +26,7 @@ public:
 
    // *method: POST
    // *location: /newDay
-   std::string newDay(const std::string& choice);
+   std::string newDay(const deuxData& data);
 
     // *method: POST
    // *location: /getB64

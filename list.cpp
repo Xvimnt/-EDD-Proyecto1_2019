@@ -286,38 +286,61 @@ void arrayList::setHead(Day *node)
     head = node;
 }
 
+int arrayList::getOrder(std::string dayName)
+{
+    if(dayName == "domingo"){
+        return 0;
+    }else if(dayName == "lunes"){
+        return 1;
+    }else if(dayName == "martes"){
+        return 2;
+    }else if(dayName == "miercoles"){
+        return 3;
+    }else if(dayName == "jueves"){
+        return 4;
+    }else if(dayName == "viernes"){
+        return 5;
+    }else if(dayName == "sabado"){
+        return 6;
+    }
+    else return -1;
+}
+
 void arrayList::add(deuxData data)
 {
     Day* node = new Day(data);
     Day *pointer = head;
-    Day *deuxPointer = head->getNext();
+    Day *previous;
 
     if (pointer != nullptr)
     {
-        if (node->getData().name < pointer->getData().name)
+        int currentOrder = getOrder(data.name);
+        int nextOrder = getOrder(pointer->getData().name);
+
+        if(currentOrder < nextOrder)
         {
+            head = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
             node->setNext(pointer);
-            head = node;
         }
         else
         {
-            while (deuxPointer)
-            {
-                if (node->getData().name < deuxPointer->getData().name)
+            do{
+                previous = pointer;
+                pointer = pointer->getNext();
+                if(pointer != nullptr)
                 {
-                    pointer->setNext(node);
-                    node->setNext(deuxPointer);
-                    return;
+                    nextOrder = getOrder(pointer->getData().name);
                 }
                 else
                 {
-                    pointer = pointer->getNext();
-                    deuxPointer = deuxPointer->getNext();
+                    previous->setNext(node);
+                    return;
                 }
-            }
-            pointer->setNext(node);
+            }while(currentOrder > nextOrder);
+            previous->setNext(node);
+            node->setNext(pointer);
         }
-    }
+    }        
     else
     {
         head = node;
@@ -327,27 +350,30 @@ void arrayList::add(deuxData data)
 std::string arrayList::getGraphic()
 {
     std::string result;
+
     Day *pointer = head;
     int count = 0;
 
-    while (pointer)
-    {
-        result.append(pointer->getData().name);
-        result.append("" + count);
-        result.append(" ");
-        result.append("[ label = \" ");
-        result.append(pointer->getData().name);
-        result.append("\" ];\n");
+    if(head != nullptr){
+        while (pointer)
+        {
+            result.append("\n");
+            result.append(pointer->getData().name);
+            result.append("[ label = \" ");
+            result.append(pointer->getData().name);
+            result.append("\" ];");
 
-        Day *temp = pointer->getNext();
-        result.append(pointer->getData().name);
-        result.append("" + count);
-        result.append("->" + temp->getData().name);
-        result.append( "" + (count + 1));
-        result.append("\n");
-        count++;
+            Day *temp = pointer->getNext();
+            result.append("\n");
+            result.append(pointer->getData().name);
+            result.append("" + count);
+            result.append("->" + temp->getData().name);
+            result.append( "" + (count + 1));
+            
+            count++;
 
-        pointer = temp;
+            pointer = temp;
+        }
     }
 
     return result;
@@ -406,24 +432,22 @@ std::string Salones::getGraphic()
     std::string result;
     Salon *pointer = head;
 
-    int count = 0;
-
-    while (pointer)
+    while (pointer != nullptr)
     {
+        std::cout << "inicializando a " << pointer->getData().name << std::endl;
+        result.append("\n");
         result.append(pointer->getData().name);
-        result.append("" + count);
-        result.append(" ");
         result.append("[ label = \" ");
         result.append(pointer->getData().name);
-        result.append("\" ];\n");
+        result.append("\" ];");
 
         Salon *temp = pointer->getNext();
-        result.append(pointer->getData().name);
-        result.append("" + count);
-        result.append("->" + temp->getData().name);
-        result.append( "" + (count + 1));
-        result.append("\n");
-        count++;
+        if(temp != nullptr){
+            std::cout << "apuntando a " << temp->getData().name << std::endl;
+            result.append("\n");
+            result.append(pointer->getData().name);
+            result.append("->" + temp->getData().name);
+        }
 
         pointer = temp;
     }
