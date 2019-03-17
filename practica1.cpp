@@ -1,9 +1,22 @@
 #include "practica1.h"
+#include <fstream>
+#include <graphviz/gvc.h>
+#include <stdlib.h> 
+
 
 BinaryTree maestros;
 CircularList cursos;
 doubleLinkedList edificios;
 arrayList dias;
+
+void writeTextFile(std::string file_path, std::string content){
+  std::ofstream myfile;
+  myfile.open (file_path+".dot");
+  myfile << content;
+  myfile.close();
+}
+
+
 
 static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -128,15 +141,27 @@ std::string practica1::newBuilding(const deuxData& data){
 
 std::string practica1::getGraphic( const std::string& choice)
 {
+    std::string result;
     if(choice == "arbol")
     {
-      return maestros.getGraphic();
+      result = maestros.getGraphic();
+      writeTextFile(choice, result);
+      if (system(NULL)) system("dot -Tpng arbol.dot -o output");
+    else exit (EXIT_FAILURE);
+      return result;
+
     }else if(choice == "cursos"){
-      return cursos.getGraphic();
+      result = cursos.getGraphic();
+      writeTextFile(choice, result);
+      return result;
     }else if(choice == "edificios"){
-      return  edificios.getGraphic();
+      result = edificios.getGraphic();
+      writeTextFile(choice, result);
+      return result;
     }else if(choice == "dias"){
-      return dias.getGraphic();
+      result = dias.getGraphic();
+      writeTextFile(choice, result);
+      return result;
     }
     return "opcion invalida";
 }

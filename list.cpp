@@ -61,7 +61,7 @@ void BinaryTree::setRoot(Professor *professor)
 std::string BinaryTree::getGraphic()
 {
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = cicrcle, style = filled, fillcolor = seashell2];\n ");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n ");
     result.append( getGraphic2(getRoot()));
     
     result.append(" \n }");
@@ -76,9 +76,9 @@ std::string BinaryTree::getGraphic2(Professor *node)
     if(node != nullptr){
         result.append(" \n ");
         result.append(node->getData().id);
-        result.append("[ label = \" ");
+        result.append("[ label = \" <C0>|");
         result.append((std::string)node->getData().name);
-        result.append("\" ];");
+        result.append("|<C1> \" ];");
 
         Professor *izq = node->getLeft();
         Professor *der = node->getRight();
