@@ -28,10 +28,6 @@ public:
    // *location: /newDay
    std::string newDay(const deuxData& data);
 
-    // *method: POST
-   // *location: /getB64
-   std::string getB64(const std::string& img);
-
    // *method: POST
    // *location: /getGraphic
    std::string getGraphic(const std::string& choice);
