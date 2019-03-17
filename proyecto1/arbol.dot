@@ -1,0 +1,6 @@
+digraph grafica{ 
+ rankdir = TB; 
+ node[shape = record, style = filled, fillcolor = seashell2];
+  
+ BX4500[ label = " <C0>|Vianny|<C1> " ]; 
+ }

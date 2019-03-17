@@ -4,7 +4,6 @@
 #include "proyecto1.h"
 
 #include <fstream>
-#include <graphviz/gvc.h>
 #include <stdlib.h> 
 
 
@@ -120,13 +119,6 @@ std::string ReadFile(const char *name)
   free(buffer);
 }
 
-std::string proyecto1::getB64(const std::string& img)
-{
-        if(img == "matrix"){
-                return ReadFile("/home/xvimnt/practica1/practica1/src/imageBef.png");
-        }
-        return "opcion invalida";
-}
 
 std::string proyecto1::newProfessor(const Data& data){
         maestros.add(data);
@@ -150,14 +142,16 @@ std::string proyecto1::getGraphic( const std::string& choice)
     {
       result = maestros.getGraphic();
       writeTextFile(choice, result);
-      if (system(NULL)) system("dot -Tpng arbol.dot -o output");
-    else exit (EXIT_FAILURE);
-      return result;
+      if (system(NULL)) system("dot -Tpng arbol.dot -o arbol.png");
+      else exit (EXIT_FAILURE);
+      return ReadFile("/home/xavi/-EDD-Proyecto1_2019/proyecto1/arbol.png");
 
     }else if(choice == "cursos"){
       result = cursos.getGraphic();
       writeTextFile(choice, result);
-      return result;
+      if (system(NULL)) system("dot -Tpng cursos.dot -o cursos.png");
+      else exit (EXIT_FAILURE);
+      return ReadFile("/home/xavi/-EDD-Proyecto1_2019/proyecto1/cursos.png");
     }else if(choice == "edificios"){
       result = edificios.getGraphic();
       writeTextFile(choice, result);
