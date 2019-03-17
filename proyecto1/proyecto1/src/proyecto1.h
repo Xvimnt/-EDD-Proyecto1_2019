@@ -8,28 +8,38 @@
 #include <string>
 #include "list.h"
 
-class proyecto1 : public ngrest::Service
+class practica1: public ngrest::Service
 {
-  public:
-    // *method: POST
-    // *location: /newProfessor
-    std::string newProfessor(const Data &data);
+public:
 
     // *method: POST
-    // *location: /newCourse
-    std::string newCourse(const Data &data);
+   // *location: /newProfessor
+   std::string newProfessor(const Data& data);
 
     // *method: POST
-    // *location: /newBuilding
-    std::string newBuilding(const deuxData &data);
+   // *location: /newCourse
+   std::string newCourse(const Data& data);
 
     // *method: POST
-    // *location: /newDay
-    std::string newDay(const deuxData &data);
+   // *location: /newBuilding
+   std::string newBuilding(const deuxData& data);
+
+   // *method: POST
+   // *location: /newDay
+   std::string newDay(const deuxData& data);
 
     // *method: POST
-    // *location: /getGraphic
-    std::string getGraphic(const std::string &choice);
+   // *location: /getB64
+   std::string getB64(const std::string& img);
+
+   // *method: POST
+   // *location: /getGraphic
+   std::string getGraphic(const std::string& choice);
+
 };
 
+
 #endif // PROYECTO1_H
+
+
+
