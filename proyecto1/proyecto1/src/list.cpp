@@ -62,8 +62,8 @@ std::string BinaryTree::getGraphic()
 {
     std::string result;
     result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n ");
-    result.append( getGraphic2(getRoot()));
-    
+    result.append(getGraphic2(getRoot()));
+
     result.append(" \n }");
 
     return result;
@@ -73,7 +73,8 @@ std::string BinaryTree::getGraphic2(Professor *node)
 {
     std::string result;
 
-    if(node != nullptr){
+    if (node != nullptr)
+    {
         result.append(" \n ");
         result.append(node->getData().id);
         result.append("[ label = \" <C0>|");
@@ -103,6 +104,44 @@ std::string BinaryTree::getGraphic2(Professor *node)
     return result;
 }
 
+Professor *BinaryTree::get(std::string id)
+{
+}
+
+void BinaryTree::modify(Professor *node, std::string newId, std::string newName)
+{
+}
+
+void BinaryTree::Delete(Professor *node)
+{
+    if (node->getLeft() != nullptr && node->getRight() != nullptr)
+    {
+    }
+    else if (node->getLeft() == nullptr)
+    {
+        /*
+        Professor padre = getParent(node);
+        if (padre->getLeft() == node)
+        {
+            padre->setLeft(getSucesor(node));
+        }
+        else
+        {
+
+        }
+        */
+    }
+    else if (node->getRight() == nullptr)
+    {
+    }
+    else
+    {
+    }
+
+    //Vaciar el puntero
+    free(node);
+}
+
 //---------------Metodos de la lista circular--------------
 CircularList::CircularList()
 {
@@ -125,9 +164,8 @@ void CircularList::add(Data data)
 
     if (first != nullptr)
     {
-        last->setNext(temp);
-        temp->setNext(first);
-        last = temp;
+        //Inserta el nodo ordenadamente
+        Insert(temp);
     }
     else
     {
@@ -137,18 +175,51 @@ void CircularList::add(Data data)
     }
 }
 
+void CircularList::Insert(Course *node)
+{
+    Course *pointer = first;
+    Course *previous;
+
+    if (node->getData().name < pointer->getData().name)
+    {
+        first = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
+        node->setNext(pointer);
+    }
+    else
+    {
+        do
+        {
+            //obtiene el nodo puntero siguiente y guarda el nodo puntero actual
+            previous = pointer;
+            pointer = pointer->getNext();
+
+            if (pointer == first)
+            {
+                //si el puntero siguiente ya es el ultimo entonces node será la nueva cola
+                previous->setNext(node);
+                node->setNext(first);
+                last = node;
+                return;
+            }
+        } while (node->getData().name > pointer->getData().name);
+        previous->setNext(node);
+        node->setNext(pointer);
+    }
+}
+
 std::string CircularList::getGraphic()
 {
-    if(first == nullptr) return "null";
+    if (first == nullptr)
+        return "null";
 
     std::string result;
     result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];");
 
     Course *pointer = first;
     Course *flag;
-    
-    do 
-    {   
+
+    do
+    {
         result.append(" \n ");
         result.append(pointer->getData().id);
         result.append(" ");
@@ -160,11 +231,73 @@ std::string CircularList::getGraphic()
         result.append(pointer->getData().id + "->" + temp->getData().id);
         flag = pointer;
         pointer = temp;
-        
+
     } while (flag != last);
 
     result.append(" \n }");
     return result;
+}
+
+Course *CircularList::get(std::string id)
+{
+    Course *pointer = first;
+
+    while (pointer != last)
+    {
+        if (pointer->getData().id == id)
+            return pointer;
+        pointer = pointer->getNext();
+    }
+    return nullptr;
+}
+
+void CircularList::modify(Course *node, std::string newId, std::string newName)
+{
+    //Get the previous one
+    Course *pointer = first;
+    while (pointer->getNext()->getData().id != node->getData().id)
+    {
+        pointer = pointer->getNext();
+    }
+
+    //Desenlazar el nodo a modificar
+    pointer->setNext(node->getNext());
+
+    //modificar el nodo
+    node->getData().name = newName;
+    node->getData().id = newId;
+
+    //Insertar el nodo ordenadamente
+    Insert(node);
+}
+
+void CircularList::Delete(Course *node)
+{
+    //Conseguir el primer nodo de la lista
+    Course *pointer = first;
+
+    //si es el primero el que se quiere borrar
+    if (node == pointer)
+    {
+        first = node->getNext();
+    }
+    else
+    {
+        Course *previous;
+        //Conseguir el nodo anterior
+        do
+        {
+            previous = pointer;
+            pointer = pointer->getNext();
+
+        } while (pointer != node);
+
+        //Se desenlaza el nodo de su posicion de la lista
+        previous->setNext(node->getNext());
+    }
+
+    //Limpiar el puntero
+    free(node);
 }
 
 // ----------------Metodos de lista doblemente enlazada----------
@@ -185,7 +318,7 @@ void doubleLinkedList::Insert(Build *node)
 
     while (pointer != last)
     {
-        std::cout << "pasando una vez por el ciclo" << std::endl;
+
         if (node->getData().name < pointer->getData().name)
         {
             if (pointer == first)
@@ -210,7 +343,6 @@ void doubleLinkedList::Insert(Build *node)
         else
         {
             pointer = pointer->getDown();
-          
         }
     }
     last = node;
@@ -251,14 +383,16 @@ std::string doubleLinkedList::getGraphic()
         result.append("\" ];");
 
         Build *temp = pointer->getDown();
-        if(temp != nullptr){
+        if (temp != nullptr)
+        {
             result.append(" \n ");
             result.append(pointer->getData().name);
             result.append(" -> " + temp->getData().name);
         }
 
         Build *previTemp = pointer->getUp();
-        if(previTemp != nullptr){
+        if (previTemp != nullptr)
+        {
             result.append(" \n ");
             result.append(pointer->getData().name);
             result.append(" -> " + previTemp->getData().name);
@@ -267,6 +401,48 @@ std::string doubleLinkedList::getGraphic()
     }
     result.append(" \n }");
     return result;
+}
+
+Build *doubleLinkedList::get(std::string name)
+{
+    Build *pointer = first;
+
+    while (pointer != nullptr)
+    {
+        if (pointer->getData().name == name)
+            return pointer;
+        pointer = pointer->getDown();
+    }
+    return nullptr;
+}
+
+void doubleLinkedList::modify(Build *node, std::string newName)
+{
+    Build *previous = node->getUp();
+    Build *next = node->getDown();
+
+    //desvincular el nodo de sus hermanos
+    previous->setDown(next);
+    next->setUp(previous);
+
+    //setear el nuevo valor
+    node->getData().name = newName;
+
+    //Insertar el nodo ordenadamente
+    Insert(node);
+}
+
+void doubleLinkedList::Delete(Build *node)
+{
+    Build *previous = node->getUp();
+    Build *next = node->getDown();
+
+    //desvincular el nodo de sus hermanos
+    previous->setDown(next);
+    next->setUp(previous);
+
+    //vaciar memoria
+    free(node);
 }
 
 //------------------------------Metodos de lista simple ordenada------------------
@@ -288,27 +464,41 @@ void arrayList::setHead(Day *node)
 
 int arrayList::getOrder(std::string dayName)
 {
-    if(dayName == "domingo"){
+    if (dayName == "domingo")
+    {
         return 0;
-    }else if(dayName == "lunes"){
+    }
+    else if (dayName == "lunes")
+    {
         return 1;
-    }else if(dayName == "martes"){
+    }
+    else if (dayName == "martes")
+    {
         return 2;
-    }else if(dayName == "miercoles"){
+    }
+    else if (dayName == "miercoles")
+    {
         return 3;
-    }else if(dayName == "jueves"){
+    }
+    else if (dayName == "jueves")
+    {
         return 4;
-    }else if(dayName == "viernes"){
+    }
+    else if (dayName == "viernes")
+    {
         return 5;
-    }else if(dayName == "sabado"){
+    }
+    else if (dayName == "sabado")
+    {
         return 6;
     }
-    else return -1;
+    else
+        return -1;
 }
 
 void arrayList::add(deuxData data)
 {
-    Day* node = new Day(data);
+    Day *node = new Day(data);
     Day *pointer = head;
     Day *previous;
 
@@ -317,17 +507,18 @@ void arrayList::add(deuxData data)
         int currentOrder = getOrder(data.name);
         int nextOrder = getOrder(pointer->getData().name);
 
-        if(currentOrder < nextOrder)
+        if (currentOrder < nextOrder)
         {
             head = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
             node->setNext(pointer);
         }
         else
         {
-            do{
+            do
+            {
                 previous = pointer;
                 pointer = pointer->getNext();
-                if(pointer != nullptr)
+                if (pointer != nullptr)
                 {
                     nextOrder = getOrder(pointer->getData().name);
                 }
@@ -336,11 +527,11 @@ void arrayList::add(deuxData data)
                     previous->setNext(node);
                     return;
                 }
-            }while(currentOrder > nextOrder);
+            } while (currentOrder > nextOrder);
             previous->setNext(node);
             node->setNext(pointer);
         }
-    }        
+    }
     else
     {
         head = node;
@@ -362,7 +553,8 @@ std::string arrayList::getGraphic()
         result.append("\" ];");
 
         Day *temp = pointer->getNext();
-        if(temp != nullptr){
+        if (temp != nullptr)
+        {
             std::cout << "apuntando a " << temp->getData().name << std::endl;
             result.append(" \n ");
             result.append(pointer->getData().name);
@@ -390,33 +582,34 @@ void Salones::setHead(Salon *node)
 
 void Salones::add(deuxData data)
 {
-    Salon* node = new Salon(data);
+    Salon *node = new Salon(data);
     Salon *pointer = head;
     Salon *previous;
 
     if (pointer != nullptr)
     {
-        
-        if( data.name < pointer->getData().name)
+
+        if (data.name < pointer->getData().name)
         {
             head = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
             node->setNext(pointer);
         }
         else
         {
-            do{
+            do
+            {
                 previous = pointer;
                 pointer = pointer->getNext();
-                if(pointer == nullptr)
+                if (pointer == nullptr)
                 {
                     previous->setNext(node);
                     return;
                 }
-            }while(data.name > pointer->getData().name);
+            } while (data.name > pointer->getData().name);
             previous->setNext(node);
             node->setNext(pointer);
         }
-    }        
+    }
     else
     {
         head = node;
@@ -438,7 +631,8 @@ std::string Salones::getGraphic()
         result.append("\" ];");
 
         Salon *temp = pointer->getNext();
-        if(temp != nullptr){
+        if (temp != nullptr)
+        {
             std::cout << "apuntando a " << temp->getData().name << std::endl;
             result.append("\n");
             result.append(pointer->getData().name);
@@ -467,22 +661,22 @@ void Horarios::Insert(schedule *node)
 {
     schedule *pointer = first;
     if (node->getData().name < pointer->getData().name)
-        {
-            first = node;
-            node->setPrevious(nullptr);
-            node->setNext(pointer);
-            pointer->setPrevious(node);
-            return;
-        }
-        
+    {
+        first = node;
+        node->setPrevious(nullptr);
+        node->setNext(pointer);
+        pointer->setPrevious(node);
+        return;
+    }
+
     while (pointer != last)
     {
         if (node->getData().name < pointer->getData().name)
         {
-                //Desenlaza el nodo arriba del puntero
-                schedule *up = pointer->getPrevious();
-                up->setNext(node);
-                node->setPrevious(up);
+            //Desenlaza el nodo arriba del puntero
+            schedule *up = pointer->getPrevious();
+            up->setNext(node);
+            node->setPrevious(up);
 
             //Setea los apuntadores para el nuevo nodo
             node->setNext(pointer);
@@ -492,7 +686,6 @@ void Horarios::Insert(schedule *node)
         else
         {
             pointer = pointer->getNext();
-          
         }
     }
     last = node;
@@ -533,14 +726,16 @@ std::string Horarios::getGraphic()
         result.append("\" ];");
 
         schedule *temp = pointer->getNext();
-        if(temp != nullptr){
+        if (temp != nullptr)
+        {
             result.append(" \n ");
             result.append(pointer->getData().name);
             result.append(" -> " + temp->getData().name);
         }
 
         schedule *previTemp = pointer->getPrevious();
-        if(previTemp != nullptr){
+        if (previTemp != nullptr)
+        {
             result.append(" \n ");
             result.append(pointer->getData().name);
             result.append(" -> " + previTemp->getData().name);

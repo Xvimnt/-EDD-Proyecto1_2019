@@ -16,7 +16,10 @@ public:
   void setRoot(Professor *professor);
   void Insert(Professor *professor, Professor *pointer);
   std::string getGraphic();
-  std::string getGraphic2(Professor* node );
+  std::string getGraphic2(Professor* node);
+  Professor *get(std::string id);
+  void modify(Professor *node, std::string newId, std::string newName);
+  void Delete(Professor *node);
 };
 
 class CircularList
@@ -24,6 +27,7 @@ class CircularList
 private:
   Course *first;
   Course *last;
+  void Insert(Course *node);
 
 public:
   void add(Data data);
@@ -33,6 +37,9 @@ public:
   void setFirst(Course *node);
   void setLast(Course *node);
   std::string getGraphic();
+  Course *get(std::string id);
+  void modify(Course *node, std::string newId, std::string newName);
+  void Delete(Course *node);
 };
 
 class doubleLinkedList
@@ -48,6 +55,9 @@ public:
   void setLast(Build *node);
   void add(deuxData node);
   void Insert(Build *node);
+  Build *get(std::string name);
+  void modify(Build *node, std::string newName);
+  void Delete(Build *node);
    std::string getGraphic();
 };
 
