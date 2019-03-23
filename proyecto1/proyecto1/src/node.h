@@ -38,15 +38,15 @@ class Salon
 class Build
 {
   private:
-    deuxData data;
+    Data data;
     Salon *salon;
     Build *up;
     Build *down;
     std::list<Salon> salones;
 
   public:
-    Build(deuxData data);
-    deuxData getData();
+    Build(Data data);
+    Data getData();
     Build *getUp();
     Build *getDown();
     void setUp(Build *build);

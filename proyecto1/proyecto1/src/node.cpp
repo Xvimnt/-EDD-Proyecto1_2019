@@ -56,12 +56,12 @@ void Course::setNext(Course *node)
 }
 
 //Here starts the buildings implementation
-deuxData Build::getData()
+Data Build::getData()
 {
     return data;
 }
 
-Build::Build(deuxData data)
+Build::Build(Data data)
 {
     this->data = data;
     up = nullptr;

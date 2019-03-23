@@ -58,6 +58,41 @@ void BinaryTree::setRoot(Professor *professor)
     root = professor;
 }
 
+std::list<Data> BinaryTree::getList()
+{
+    std::list<Data> result;
+    std::list<Professor *> queue;
+
+    if (root != nullptr)
+        queue.push_back(root);
+
+    //Se realiza el recorrido en inorden para mostrar la lista ordenada
+    while (!queue.empty())
+    {
+        Professor *node = queue.front;
+        queue.pop_front();
+
+        if (node != nullptr)
+        {
+            result.push_back(node->getData());
+
+            Professor *izq = node->getLeft();
+            Professor *der = node->getRight();
+
+            if (izq != nullptr)
+            {
+                queue.push_back(izq);
+            }
+            if (der != nullptr)
+            {
+                queue.push_back(der);
+            }
+        }
+    }
+
+    return result;
+}
+
 std::string BinaryTree::getGraphic()
 {
     std::string result;
@@ -207,6 +242,24 @@ void CircularList::Insert(Course *node)
     }
 }
 
+std::list<Data> CircularList::getList()
+{
+    std::list<Data> result;
+
+    Course *pointer = first;
+    if (pointer != nullptr)
+    {
+        do
+        {
+            result.push_back(pointer->getData());
+            pointer = pointer->getNext();
+
+        } while (pointer != last);
+    }
+
+    return result;
+}
+
 std::string CircularList::getGraphic()
 {
     if (first == nullptr)
@@ -351,7 +404,7 @@ void doubleLinkedList::Insert(Build *node)
     pointer->setDown(node);
 }
 
-void doubleLinkedList::add(deuxData node)
+void doubleLinkedList::add(Data node)
 {
     Build *temp = new Build(node);
 
@@ -368,6 +421,20 @@ void doubleLinkedList::add(deuxData node)
     }
 }
 
+std::list<Data> doubleLinkedList::getList()
+{
+    std::list<Data> result;
+    Build *pointer = first;
+
+    while (pointer != nullptr)
+    {
+        result.push_back(pointer->getData());
+        pointer = pointer->getDown();
+    }
+
+    return result;
+}
+
 std::string doubleLinkedList::getGraphic()
 {
     std::string result;
@@ -377,25 +444,25 @@ std::string doubleLinkedList::getGraphic()
     while (pointer)
     {
         result.append(" \n ");
-        result.append(pointer->getData().name);
+        result.append(pointer->getData().id);
         result.append("[ label = \" ");
-        result.append(pointer->getData().name);
+        result.append(pointer->getData().id);
         result.append("\" ];");
 
         Build *temp = pointer->getDown();
         if (temp != nullptr)
         {
             result.append(" \n ");
-            result.append(pointer->getData().name);
-            result.append(" -> " + temp->getData().name);
+            result.append(pointer->getData().id);
+            result.append(" -> " + temp->getData().id);
         }
 
         Build *previTemp = pointer->getUp();
         if (previTemp != nullptr)
         {
             result.append(" \n ");
-            result.append(pointer->getData().name);
-            result.append(" -> " + previTemp->getData().name);
+            result.append(pointer->getData().id);
+            result.append(" -> " + previTemp->getData().id);
         }
         pointer = temp;
     }
@@ -409,14 +476,14 @@ Build *doubleLinkedList::get(std::string name)
 
     while (pointer != nullptr)
     {
-        if (pointer->getData().name == name)
+        if (pointer->getData().id == name)
             return pointer;
         pointer = pointer->getDown();
     }
     return nullptr;
 }
 
-void doubleLinkedList::modify(Build *node, std::string newName)
+void doubleLinkedList::modify(Build *node, std::string newName, std::string newOcc)
 {
     Build *previous = node->getUp();
     Build *next = node->getDown();
@@ -426,7 +493,8 @@ void doubleLinkedList::modify(Build *node, std::string newName)
     next->setUp(previous);
 
     //setear el nuevo valor
-    node->getData().name = newName;
+    node->getData().id = newName;
+    node->getData().name = newOcc;
 
     //Insertar el nodo ordenadamente
     Insert(node);

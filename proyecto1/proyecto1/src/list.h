@@ -2,6 +2,7 @@
 #define LIST_H
 #include "node.h"
 #include <string>
+#include <list>
 
 class BinaryTree
 {
@@ -15,6 +16,7 @@ public:
   Professor *getRoot();
   void setRoot(Professor *professor);
   void Insert(Professor *professor, Professor *pointer);
+  std::list<Data> getList();
   std::string getGraphic();
   std::string getGraphic2(Professor* node);
   Professor *get(std::string id);
@@ -36,6 +38,7 @@ public:
   Course *getLast();
   void setFirst(Course *node);
   void setLast(Course *node);
+  std::list<Data> getList();
   std::string getGraphic();
   Course *get(std::string id);
   void modify(Course *node, std::string newId, std::string newName);
@@ -53,10 +56,11 @@ public:
   Build *getLast();
   void setFirst(Build *node);
   void setLast(Build *node);
-  void add(deuxData node);
+  void add(Data node);
+  std::list<Data> getList();
   void Insert(Build *node);
   Build *get(std::string name);
-  void modify(Build *node, std::string newName);
+  void modify(Build *node, std::string newName, std::string newOcc);
   void Delete(Build *node);
    std::string getGraphic();
 };
