@@ -20,6 +20,11 @@ public:
   std::string getGraphic();
   std::string getGraphic2(Professor* node);
   Professor *get(std::string id);
+  Professor *getParent(Professor* node);
+  Professor *getSucesor(Professor* node);
+  Professor *getPredecesor(Professor* node);
+  void cleanParentPointer(Professor* node);
+  void unlink(Professor* node);
   void modify(Professor *node, std::string newId, std::string newName);
   void Delete(Professor *node);
 };

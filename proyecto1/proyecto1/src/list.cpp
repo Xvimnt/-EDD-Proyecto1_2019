@@ -145,38 +145,139 @@ Professor *BinaryTree::get(std::string id)
 
 void BinaryTree::modify(Professor *node, std::string newId, std::string newName)
 {
+    unlink(node);
+    node->getData().id = newId;
+    node->getData().name = newName;
+    Insert(node,root);
+}
+
+void BinaryTree::unlink(Professor* node){
+    Professor *padre = getParent(node);
+    if (node->getLeft() != nullptr && node->getRight() != nullptr)
+    {
+        Professor *sucesor = getSucesor(node);
+        if (padre->getLeft() == node)
+        {
+            padre->setLeft(sucesor);
+        }
+        else
+        {
+            padre->setRight(sucesor);
+        }
+        sucesor->setRight(node->getRight());
+        sucesor->setLeft(node->getLeft());
+    }
+    else if (node->getLeft() == nullptr)
+    {
+        Professor *sucesor = getSucesor(node);
+        if (padre->getLeft() == node)
+        {
+            padre->setLeft(sucesor);
+        }
+        else
+        {
+            padre->setRight(sucesor);
+        }
+        sucesor->setRight(node->getRight());
+    }
+    else if (node->getRight() == nullptr)
+    {
+        Professor *predecesor = getPredecesor(node);
+        if (padre->getLeft() == node)
+        {
+            padre->setLeft(predecesor);
+        }
+        else
+        {
+            padre->setRight(predecesor);
+        }
+        predecesor->setLeft(node->getLeft());
+    }
 }
 
 void BinaryTree::Delete(Professor *node)
 {
-    if (node->getLeft() != nullptr && node->getRight() != nullptr)
-    {
-    }
-    else if (node->getLeft() == nullptr)
-    {
-        /*
-        Professor padre = getParent(node);
-        if (padre->getLeft() == node)
-        {
-            padre->setLeft(getSucesor(node));
-        }
-        else
-        {
-
-        }
-        */
-    }
-    else if (node->getRight() == nullptr)
-    {
-    }
-    else
-    {
-    }
-
+    unlink(node);
     //Vaciar el puntero
     free(node);
 }
 
+Professor *BinaryTree::getSucesor(Professor *node)
+{
+    Professor *pointer = node->getRight();
+
+    while (pointer->getLeft() != nullptr)
+    {
+        pointer = pointer->getLeft();
+    }
+    //limpiar el apuntador del nodo padre
+    cleanParentPointer(pointer);
+
+    return pointer;
+}
+
+void BinaryTree::cleanParentPointer(Professor *node)
+{
+    Professor *padre = getParent(node);
+
+    if (padre->getLeft() == node)
+    {
+        padre->setLeft(nullptr);
+    }
+    else
+    {
+        padre->setRight(nullptr);
+    }
+}
+
+Professor *BinaryTree::getPredecesor(Professor *node)
+{
+    Professor *pointer = node->getLeft();
+
+    while (pointer->getRight() != nullptr)
+    {
+        pointer = pointer->getRight();
+    }
+    //limpiar el apuntador del nodo padre
+    cleanParentPointer(pointer);
+
+    return pointer;
+}
+
+Professor *BinaryTree::getParent(Professor *node)
+{
+    std::list<Professor *> queue;
+
+    if (root != nullptr)
+        queue.push_back(root);
+
+    //Se realiza el recorrido en inorden para mostrar la lista ordenada
+    while (!queue.empty())
+    {
+        Professor *pointer = queue.front;
+        queue.pop_front();
+
+        if (pointer != nullptr)
+        {
+            Professor *izq = pointer->getLeft();
+            Professor *der = pointer->getRight();
+
+            if (izq == node || der == node)
+                return pointer;
+
+            if (izq != nullptr)
+            {
+                queue.push_back(izq);
+            }
+            if (der != nullptr)
+            {
+                queue.push_back(der);
+            }
+        }
+    }
+
+    return nullptr;
+}
 //---------------Metodos de la lista circular--------------
 CircularList::CircularList()
 {
