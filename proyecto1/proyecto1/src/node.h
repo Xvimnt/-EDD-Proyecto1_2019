@@ -24,17 +24,23 @@ struct curso{
   std::string catedratico;
 };
 
+struct salones{
+  std::string edificio;
+  std::string salon;
+  std::string capacidad;
+};
+
 //Defining salons
 class Salon
 {
   private:
-    deuxData data;
+    Data data;
     Salon *down;
     cell* right;
 
   public:
-    Salon(deuxData data);
-    deuxData getData();
+    Salon(Data data);
+    Data getData();
     void setNext(Salon *node);
     Salon *getNext();
     cell* getRight();
@@ -44,15 +50,15 @@ class Salon
 class Build
 {
   private:
-    Data data;
+    deuxData data;
     Salon *salon;
     Build *up;
     Build *down;
     std::list<Salon> salones;
 
   public:
-    Build(Data data);
-    Data getData();
+    Build(deuxData data);
+    deuxData getData();
     Build *getUp();
     Build *getDown();
     void setUp(Build *build);

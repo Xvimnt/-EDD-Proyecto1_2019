@@ -61,11 +61,11 @@ public:
   Build *getLast();
   void setFirst(Build *node);
   void setLast(Build *node);
-  void add(Data data);
-  std::list<Data> getList();
+  void add(deuxData data);
+  std::list<deuxData> getList();
   void Insert(Build *node);
   Build *get(std::string name);
-  void modify(Build *node, std::string newName, std::string newOcc);
+  void modify(Build *node, std::string newName);
   void Delete(Build *node);
    std::string getGraphic();
 };
@@ -94,9 +94,10 @@ class Salones{
     Salon* getHead();
     void setHead(Salon* node);
     Salon* getQueue();
+    Salon* get(std::string id);
     void setQueue(Salon* node);
-    void add(deuxData data);
-   std::string getGraphic();
+    void add(Data data);
+    std::string getGraphic();
 };
 
 class Horarios

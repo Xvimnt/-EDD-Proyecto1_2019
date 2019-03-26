@@ -137,9 +137,20 @@ std::string practica1::newCourse(const curso& data){
   }
 }
 
-std::string practica1::newBuilding(const Data& data){
-  edificios.add(data);
-  return "ok";
+std::string practica1::newSalon(const salones& data){
+  try
+  {
+    Build* enlazar = edificios.get(data.edificio);
+    Data newSalonData;
+    newSalonData.id = data.salon;
+    newSalonData.name = data.capacidad;
+    salones.add(newSalonData);
+    enlazar->getSalones().add(salones.get(newSalonData.id));
+    return "ok";
+  }
+  catch(const std::exception& e){
+    return "error al agregar";
+  }
 }
 
 std::string practica1::getGraphic( const std::string& choice)

@@ -513,7 +513,7 @@ void doubleLinkedList::Insert(Build *node)
     pointer->setDown(node);
 }
 
-void doubleLinkedList::add(Data node)
+void doubleLinkedList::add(deuxData node)
 {
     Build *temp = new Build(node);
 
@@ -530,9 +530,9 @@ void doubleLinkedList::add(Data node)
     }
 }
 
-std::list<Data> doubleLinkedList::getList()
+std::list<deuxData> doubleLinkedList::getList()
 {
-    std::list<Data> result;
+    std::list<deuxData> result;
     Build *pointer = first;
 
     while (pointer != nullptr)
@@ -553,25 +553,25 @@ std::string doubleLinkedList::getGraphic()
     while (pointer)
     {
         result.append(" \n ");
-        result.append(pointer->getData().id);
+        result.append(pointer->getData().name);
         result.append("[ label = \" ");
-        result.append(pointer->getData().id);
+        result.append(pointer->getData().name);
         result.append("\" ];");
 
         Build *temp = pointer->getDown();
         if (temp != nullptr)
         {
             result.append(" \n ");
-            result.append(pointer->getData().id);
-            result.append(" -> " + temp->getData().id);
+            result.append(pointer->getData().name);
+            result.append(" -> " + temp->getData().name);
         }
 
         Build *previTemp = pointer->getUp();
         if (previTemp != nullptr)
         {
             result.append(" \n ");
-            result.append(pointer->getData().id);
-            result.append(" -> " + previTemp->getData().id);
+            result.append(pointer->getData().name);
+            result.append(" -> " + previTemp->getData().name);
         }
         pointer = temp;
     }
@@ -585,14 +585,14 @@ Build *doubleLinkedList::get(std::string name)
 
     while (pointer != nullptr)
     {
-        if (pointer->getData().id == name)
+        if (pointer->getData().name == name)
             return pointer;
         pointer = pointer->getDown();
     }
     return nullptr;
 }
 
-void doubleLinkedList::modify(Build *node, std::string newName, std::string newOcc)
+void doubleLinkedList::modify(Build *node, std::string newName)
 {
     Build *previous = node->getUp();
     Build *next = node->getDown();
@@ -602,8 +602,7 @@ void doubleLinkedList::modify(Build *node, std::string newName, std::string newO
     next->setUp(previous);
 
     //setear el nuevo valor
-    node->getData().id = newName;
-    node->getData().name = newOcc;
+    node->getData().name = newName;
 
     //Insertar el nodo ordenadamente
     Insert(node);
@@ -757,7 +756,18 @@ void Salones::setHead(Salon *node)
     head = node;
 }
 
-void Salones::add(deuxData data)
+Salon* Salones::get(std::string id){
+    Salon *pointer = head;
+
+    while(pointer->getData().id != id){
+        pointer = pointer->getNext();
+    }
+
+    if(pointer->getData().id == id) return pointer;
+    else return nullptr;
+}
+
+void Salones::add(Data data)
 {
     Salon *node = new Salon(data);
     Salon *pointer = head;
@@ -766,7 +776,7 @@ void Salones::add(deuxData data)
     if (pointer != nullptr)
     {
 
-        if (data.name < pointer->getData().name)
+        if (data.id < pointer->getData().id)
         {
             head = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
             node->setNext(pointer);
@@ -782,7 +792,7 @@ void Salones::add(deuxData data)
                     previous->setNext(node);
                     return;
                 }
-            } while (data.name > pointer->getData().name);
+            } while (data.id > pointer->getData().id);
             previous->setNext(node);
             node->setNext(pointer);
         }
@@ -800,20 +810,20 @@ std::string Salones::getGraphic()
 
     while (pointer != nullptr)
     {
-        std::cout << "inicializando a " << pointer->getData().name << std::endl;
         result.append("\n");
-        result.append(pointer->getData().name);
+        result.append(pointer->getData().id);
         result.append("[ label = \" ");
+        result.append(pointer->getData().id);
+        result.append("|");
         result.append(pointer->getData().name);
         result.append("\" ];");
 
         Salon *temp = pointer->getNext();
         if (temp != nullptr)
         {
-            std::cout << "apuntando a " << temp->getData().name << std::endl;
             result.append("\n");
-            result.append(pointer->getData().name);
-            result.append("->" + temp->getData().name);
+            result.append(pointer->getData().id);
+            result.append("->" + temp->getData().id);
         }
 
         pointer = temp;

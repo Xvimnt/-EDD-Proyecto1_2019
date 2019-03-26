@@ -21,12 +21,8 @@ public:
    std::string newCourse(const curso& data);
 
     // *method: POST
-   // *location: /newBuilding
-   std::string newBuilding(const Data& data);
-
-   // *method: POST
-   // *location: /newDay
-   std::string newDay(const deuxData& data);
+   // *location: /newSalon
+   std::string newSalon(const salones& data);
 
    // *method: POST
    // *location: /getGraphic

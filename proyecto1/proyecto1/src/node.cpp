@@ -66,12 +66,12 @@ void Course::setNext(Course *node)
 }
 
 //Here starts the buildings implementation
-Data Build::getData()
+deuxData Build::getData()
 {
     return data;
 }
 
-Build::Build(Data data)
+Build::Build(deuxData data)
 {
     this->data = data;
     up = nullptr;
@@ -134,12 +134,12 @@ Matrix* Day::getMatrixNode(){
     }
 //Here starts the methods for the salon
 
-Salon::Salon(deuxData data)
+Salon::Salon(Data data)
 {
     data = data;
     down = nullptr;
 }
-deuxData Salon::getData()
+Data Salon::getData()
 {
     return data;
 }
