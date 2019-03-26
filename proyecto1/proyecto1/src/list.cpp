@@ -69,7 +69,7 @@ std::list<Data> BinaryTree::getList()
     //Se realiza el recorrido en inorden para mostrar la lista ordenada
     while (!queue.empty())
     {
-        Professor *node = queue.front;
+        Professor *node = queue.front();
         queue.pop_front();
 
         if (node != nullptr)
@@ -141,6 +141,14 @@ std::string BinaryTree::getGraphic2(Professor *node)
 
 Professor *BinaryTree::get(std::string id)
 {
+    if(root == nullptr) return nullptr;
+    Professor* pointer = root;
+
+    while(pointer->getData().id != id || pointer != nullptr){
+        if(id < pointer->getData().id) pointer = pointer->getLeft();
+        else pointer = pointer->getRight();
+    }
+    return nullptr;
 }
 
 void BinaryTree::modify(Professor *node, std::string newId, std::string newName)
@@ -254,7 +262,7 @@ Professor *BinaryTree::getParent(Professor *node)
     //Se realiza el recorrido en inorden para mostrar la lista ordenada
     while (!queue.empty())
     {
-        Professor *pointer = queue.front;
+        Professor *pointer = queue.front();
         queue.pop_front();
 
         if (pointer != nullptr)

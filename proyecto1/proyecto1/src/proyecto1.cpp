@@ -121,12 +121,23 @@ std::string practica1::newProfessor(const Data& data){
         return "ok";
 }
 
-std::string practica1::newCourse(const Data& data){
-        cursos.add(data);
-        return "ok";
+std::string practica1::newCourse(const curso& data){
+  try
+  {
+    Professor* enlazar = maestros.get(data.catedratico);
+    Data newCourseData;
+    newCourseData.id = data.codigo;
+    newCourseData.name = data.curso;
+    cursos.add(newCourseData);
+    enlazar->setCurso(cursos.get(newCourseData.id));
+    return "ok";
+  }
+  catch(const std::exception& e){
+    return "error al agregar";
+  }
 }
 
-std::string practica1::newBuilding(const deuxData& data){
+std::string practica1::newBuilding(const Data& data){
   edificios.add(data);
   return "ok";
 }

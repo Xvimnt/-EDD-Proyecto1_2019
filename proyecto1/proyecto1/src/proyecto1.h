@@ -18,11 +18,11 @@ public:
 
     // *method: POST
    // *location: /newCourse
-   std::string newCourse(const Data& data);
+   std::string newCourse(const curso& data);
 
     // *method: POST
    // *location: /newBuilding
-   std::string newBuilding(const deuxData& data);
+   std::string newBuilding(const Data& data);
 
    // *method: POST
    // *location: /newDay
@@ -36,6 +36,3 @@ public:
 
 
 #endif // PROYECTO1_H
-
-
-

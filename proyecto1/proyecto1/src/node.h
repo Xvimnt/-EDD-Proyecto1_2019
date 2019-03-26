@@ -18,6 +18,12 @@ struct deuxData
     std::string name;
 };
 
+struct curso{
+  std::string codigo;
+  std::string curso;
+  std::string catedratico;
+};
+
 //Defining salons
 class Salon
 {
@@ -54,6 +60,8 @@ class Build
     std::list<Salon> getSalones();
 };
 
+class Course;
+
 //Defining Professor
 class Professor
 {
@@ -61,14 +69,17 @@ class Professor
     Data data;
     Professor *left;
     Professor *right;
+    Course* curso;
 
   public:
     Professor(Data data);
     Data getData();
     Professor *getLeft();
     Professor *getRight();
+    Course* getCurso();
     void setRight(Professor *node);
     void setLeft(Professor *node);
+    void setCurso(Course *node);
 };
 
 //Defining course

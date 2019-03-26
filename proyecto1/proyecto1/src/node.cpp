@@ -12,6 +12,16 @@ Professor *Professor::getRight()
     return right;
 }
 
+Course *Professor::getCurso()
+{
+    return curso;
+}
+
+void Professor::setCurso(Course *node)
+{
+    curso = node;
+}
+
 void Professor::setRight(Professor *node)
 {
     right = node;

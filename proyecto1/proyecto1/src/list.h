@@ -61,7 +61,7 @@ public:
   Build *getLast();
   void setFirst(Build *node);
   void setLast(Build *node);
-  void add(Data node);
+  void add(Data data);
   std::list<Data> getList();
   void Insert(Build *node);
   Build *get(std::string name);
