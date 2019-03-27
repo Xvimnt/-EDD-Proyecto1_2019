@@ -118,7 +118,7 @@ std::string ReadFile(const char *name)
 
 std::string practica1::newProfessor(const Data& data){
         maestros.add(data);
-        return "ok";
+        return "Anadido correctamente<" + data.id + ">";
 }
 
 std::string practica1::newCourse(const curso& data){
@@ -130,27 +130,34 @@ std::string practica1::newCourse(const curso& data){
     newCourseData.name = data.curso;
     cursos.add(newCourseData);
     enlazar->setCurso(cursos.get(newCourseData.id));
-    return "ok";
+    return "Anadido correctamente<" + newCourseData.id + ">";
   }
   catch(const std::exception& e){
     return "error al agregar";
   }
 }
 
-std::string practica1::newSalon(const salones& data){
+std::string practica1::newSalon(const salData& data){
   try
   {
     Build* enlazar = edificios.get(data.edificio);
     Data newSalonData;
     newSalonData.id = data.salon;
     newSalonData.name = data.capacidad;
-    salones.add(newSalonData);
-    enlazar->getSalones().add(salones.get(newSalonData.id));
-    return "ok";
+    enlazar->getSalones()->add(newSalonData);
+    return "Anadido correctamente<" + newSalonData.id + ">";
   }
   catch(const std::exception& e){
     return "error al agregar";
   }
+}
+
+std::list<Data> practica1::getMaestros(){
+  return maestros.getList();
+}
+
+std::list<Data> practica1::getEdificios(){
+  return edificios.getList();
 }
 
 std::string practica1::getGraphic( const std::string& choice)
@@ -178,10 +185,4 @@ std::string practica1::getGraphic( const std::string& choice)
       return result;
     }
     return "opcion invalida";
-}
-
-std::string practica1::newDay(const deuxData& data)
-{
-  dias.add(data);
-  return "ok";
 }

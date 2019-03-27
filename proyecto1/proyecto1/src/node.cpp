@@ -98,7 +98,7 @@ void Build::setDown(Build *build)
     down = build;
 }
 
-std::list<Salon> Build::getSalones()
+Salones* Build::getSalones()
 {
     return salones;
 }
@@ -126,12 +126,15 @@ deuxData Day::getData()
     return data;
 }
 
-Matrix* Day::getMatrixNode(){
+Matrix *Day::getMatrixNode()
+{
     return matriz;
 }
-    void Day::setMatrixNode(Matrix* node){
-        matriz = node;
-    }
+
+void Day::setMatrixNode(Matrix *node)
+{
+    matriz = node;
+}
 //Here starts the methods for the salon
 
 Salon::Salon(Data data)
@@ -236,16 +239,19 @@ cell *cell::getDown()
 }
 
 //definiendo el nodo matriz
-Salon* Matrix::getFirstRow()
+Salon *Matrix::getFirstRow()
 {
     return firstRow;
 }
-    schedule* Matrix::getFirstCol(){
-        return firstCol;
-    }
-    void Matrix::setFirstRow(Salon* node){
-        firstRow = node;
-    }
-    void Matrix::setFirstCol(schedule* node){
-        firstCol = node;
-    }
+schedule *Matrix::getFirstCol()
+{
+    return firstCol;
+}
+void Matrix::setFirstRow(Salon *node)
+{
+    firstRow = node;
+}
+void Matrix::setFirstCol(schedule *node)
+{
+    firstCol = node;
+}

@@ -67,7 +67,8 @@ public:
   Build *get(std::string name);
   void modify(Build *node, std::string newName);
   void Delete(Build *node);
-   std::string getGraphic();
+  std::string getGraphic();
+  
 };
 
 class arrayList

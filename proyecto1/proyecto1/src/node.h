@@ -24,7 +24,7 @@ struct curso{
   std::string catedratico;
 };
 
-struct salones{
+struct salData{
   std::string edificio;
   std::string salon;
   std::string capacidad;
@@ -47,6 +47,8 @@ class Salon
     void setRight(cell* node);
 };
 
+class Salones;
+
 class Build
 {
   private:
@@ -54,7 +56,7 @@ class Build
     Salon *salon;
     Build *up;
     Build *down;
-    std::list<Salon> salones;
+    Salones *salones;
 
   public:
     Build(deuxData data);
@@ -63,7 +65,7 @@ class Build
     Build *getDown();
     void setUp(Build *build);
     void setDown(Build *build);
-    std::list<Salon> getSalones();
+    Salones* getSalones();
 };
 
 class Course;

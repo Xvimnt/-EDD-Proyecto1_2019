@@ -22,7 +22,16 @@ public:
 
     // *method: POST
    // *location: /newSalon
-   std::string newSalon(const salones& data);
+   std::string newSalon(const salData& data);
+
+   // *method: GET
+   // *location: /getMaestros
+   std::list<Data> getMaestros();
+
+    // *method: GET
+   // *location: /getEdificios
+   std::list<Data> getEdificios();
+
 
    // *method: POST
    // *location: /getGraphic

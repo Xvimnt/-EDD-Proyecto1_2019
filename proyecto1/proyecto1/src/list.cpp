@@ -143,10 +143,10 @@ Professor *BinaryTree::get(std::string id)
 {
     if(root == nullptr) return nullptr;
     Professor* pointer = root;
-
     while(pointer->getData().id != id || pointer != nullptr){
-        if(id < pointer->getData().id) pointer = pointer->getLeft();
-        else pointer = pointer->getRight();
+        if(id == pointer->getData().id) return pointer;
+        else if(id < pointer->getData().id) pointer = pointer->getLeft();
+        else if(id > pointer->getData().id)pointer = pointer->getRight();
     }
     return nullptr;
 }
@@ -404,12 +404,12 @@ Course *CircularList::get(std::string id)
 {
     Course *pointer = first;
 
-    while (pointer != last)
+    do
     {
         if (pointer->getData().id == id)
             return pointer;
         pointer = pointer->getNext();
-    }
+    }while (pointer != first);
     return nullptr;
 }
 
