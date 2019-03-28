@@ -9,6 +9,7 @@ class BinaryTree
 
 private:
   Professor *root;
+  std::list<Data> param;
 
 public:
   void add(Data data);
@@ -27,6 +28,8 @@ public:
   void unlink(Professor* node);
   void modify(Professor *node, std::string newId, std::string newName);
   void Delete(Professor *node);
+  void inOrden(Professor *node);
+  void visita(Professor *node);
 };
 
 class CircularList
@@ -85,13 +88,14 @@ public:
    std::string getGraphic();
 };
 
+
 class Salones{
   private:
     Salon* head;
     Salon* queue;
   
-
   public:
+    Salones(Salon* salon);
     Salon* getHead();
     void setHead(Salon* node);
     Salon* getQueue();

@@ -1,12 +1,13 @@
 #include "proyecto1.h"
 #include <fstream>
+#include <list>
 #include <stdlib.h> 
-
 
 BinaryTree maestros;
 CircularList cursos;
 doubleLinkedList edificios;
 arrayList dias;
+std::list<std::string> registro;
 
 void writeTextFile(std::string file_path, std::string content){
   std::ofstream myfile;
@@ -118,6 +119,7 @@ std::string ReadFile(const char *name)
 
 std::string practica1::newProfessor(const Data& data){
         maestros.add(data);
+        registro.push_back("Anadido correctamente[" + data.id + "]");
         return "Anadido correctamente<" + data.id + ">";
 }
 
@@ -130,9 +132,11 @@ std::string practica1::newCourse(const curso& data){
     newCourseData.name = data.curso;
     cursos.add(newCourseData);
     enlazar->setCurso(cursos.get(newCourseData.id));
+    registro.push_back("Anadido correctamente[" + newCourseData.id + "]");
     return "Anadido correctamente<" + newCourseData.id + ">";
   }
   catch(const std::exception& e){
+    registro.push_back("Error al agregar[" + data.curso + "]");
     return "error al agregar";
   }
 }
@@ -145,9 +149,11 @@ std::string practica1::newSalon(const salData& data){
     newSalonData.id = data.salon;
     newSalonData.name = data.capacidad;
     enlazar->getSalones()->add(newSalonData);
+    registro.push_back("Anadido correctamente[" + newSalonData.id + "]");
     return "Anadido correctamente<" + newSalonData.id + ">";
   }
   catch(const std::exception& e){
+    registro.push_back("Error al agregar[" + data.salon + "]");
     return "error al agregar";
   }
 }
@@ -156,7 +162,15 @@ std::list<Data> practica1::getMaestros(){
   return maestros.getList();
 }
 
-std::list<Data> practica1::getEdificios(){
+std::list<std::string> practica1::getReport(){
+  return registro;
+}
+
+std::list<Data> practica1::getCursos(){
+  return cursos.getList();
+}
+
+std::list<deuxData> practica1::getEdificios(){
   return edificios.getList();
 }
 
@@ -186,3 +200,49 @@ std::string practica1::getGraphic( const std::string& choice)
     }
     return "opcion invalida";
 }
+ 
+  std::string practica1::deleteProfessor(const std::string& id){
+    try{
+      maestros.Delete(maestros.get(id));
+      registro.push_back("exito al eliminar[" + id + "]");
+      return "exito al eliminar<" + id + ">";
+    }catch(std::exception& e){
+      registro.push_back("error al eliminar[" + id + "]");
+      return "error al eliminar<" + id + ">";
+    }
+  }
+
+  std::string practica1::deleteCourse(const std::string& id){
+    try{
+      cursos.Delete(cursos.get(id));
+      registro.push_back("exito al eliminar[" + id + "]");
+      return "exito al eliminar<" + id + ">";
+    }catch(std::exception& e){
+      registro.push_back("error al eliminar[" + id + "]");
+      return "error al eliminar<" + id + ">";
+    }
+  }
+
+
+  std::string practica1::modifyProfessor(const std::string& id, const Data& data){
+    try{
+      maestros.modify(maestros.get(id),data.id, data.name);
+      registro.push_back("exito al modificar[" + id + "]");
+      return "exito al editar<" + id + ">";
+    }catch(std::exception& e){
+      registro.push_back("error al modificar[" + id + "]");
+      return "error al editar<" + id + ">";
+    }
+  }
+
+  
+  std::string practica1::modifyCourse(const std::string& id, const Data& data){
+    try{
+      cursos.modify(cursos.get(id),data.id, data.name);
+      registro.push_back("exito al modificar[" + id + "]");
+      return "exito al editar<" + id + ">";
+    }catch(std::exception& e){
+      registro.push_back("exito al modificar[" + id + "]");
+      return "error al editar<" + id + ">";
+    }
+  }

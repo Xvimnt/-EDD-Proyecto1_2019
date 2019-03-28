@@ -65,6 +65,7 @@ void Course::setNext(Course *node)
     this->next = node;
 }
 
+
 //Here starts the buildings implementation
 deuxData Build::getData()
 {
@@ -98,7 +99,7 @@ void Build::setDown(Build *build)
     down = build;
 }
 
-Salones* Build::getSalones()
+Salones *Build::getSalones()
 {
     return salones;
 }

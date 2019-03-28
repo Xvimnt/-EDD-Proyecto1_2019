@@ -24,14 +24,37 @@ public:
    // *location: /newSalon
    std::string newSalon(const salData& data);
 
+    // *method: POST
+   // *location: /deleteProfessor
+   std::string deleteProfessor(const std::string& id);
+
+   // *method: POST
+   // *location: /deleteCourse
+   std::string deleteCourse(const std::string& id);
+
+   // *method: POST
+   // *location: /modifyProfessor
+   std::string modifyProfessor(const std::string& id, const Data& data);
+
+   // *method: POST
+   // *location: /modifyCourse
+   std::string modifyCourse(const std::string& id, const Data& data);
+
    // *method: GET
    // *location: /getMaestros
    std::list<Data> getMaestros();
 
     // *method: GET
-   // *location: /getEdificios
-   std::list<Data> getEdificios();
+   // *location: /getCursos
+   std::list<Data> getCursos();
 
+    // *method: GET
+   // *location: /getEdificios
+   std::list<deuxData> getEdificios();
+
+    // *method: GET
+   // *location: /getReport
+   std::list<std::string> getReport();
 
    // *method: POST
    // *location: /getGraphic

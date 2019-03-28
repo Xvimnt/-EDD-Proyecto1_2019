@@ -1,5 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
+
 #include <iostream>
 #include <string>
 #include <list>
@@ -65,7 +66,7 @@ class Build
     Build *getDown();
     void setUp(Build *build);
     void setDown(Build *build);
-    Salones* getSalones();
+    Salones *getSalones();
 };
 
 class Course;

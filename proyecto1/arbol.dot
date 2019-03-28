@@ -2,5 +2,4 @@ digraph grafica{
  rankdir = TB; 
  node[shape = record, style = filled, fillcolor = seashell2];
   
- AX400[ label = " <C0>|Maria 1|<C1> " ]; 
  }

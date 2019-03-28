@@ -60,45 +60,31 @@ void BinaryTree::setRoot(Professor *professor)
 
 std::list<Data> BinaryTree::getList()
 {
-    std::list<Data> result;
-    std::list<Professor *> queue;
+    param.clear();
+    inOrden(root);
+    return param;
+}
 
-    if (root != nullptr)
-        queue.push_back(root);
+void BinaryTree::inOrden(Professor *node)
+{
+    if (node == nullptr)
+        return;
+    inOrden(node->getLeft());
+    visita(node);
+    inOrden(node->getRight());
+}
 
-    //Se realiza el recorrido en inorden para mostrar la lista ordenada
-    while (!queue.empty())
-    {
-        Professor *node = queue.front();
-        queue.pop_front();
-
-        if (node != nullptr)
-        {
-            result.push_back(node->getData());
-
-            Professor *izq = node->getLeft();
-            Professor *der = node->getRight();
-
-            if (izq != nullptr)
-            {
-                queue.push_back(izq);
-            }
-            if (der != nullptr)
-            {
-                queue.push_back(der);
-            }
-        }
-    }
-
-    return result;
+void BinaryTree::visita(Professor *node)
+{
+    param.push_back(node->getData());
 }
 
 std::string BinaryTree::getGraphic()
 {
     std::string result;
     result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];\n ");
-    result.append(getGraphic2(getRoot()));
-
+    result.append( getGraphic2(getRoot()));
+    
     result.append(" \n }");
 
     return result;
@@ -108,11 +94,12 @@ std::string BinaryTree::getGraphic2(Professor *node)
 {
     std::string result;
 
-    if (node != nullptr)
-    {
+    if(node != nullptr){
         result.append(" \n ");
         result.append(node->getData().id);
         result.append("[ label = \" <C0>|");
+        result.append((std::string)node->getData().id);
+        result.append("---");
         result.append((std::string)node->getData().name);
         result.append("|<C1> \" ];");
 
@@ -141,14 +128,19 @@ std::string BinaryTree::getGraphic2(Professor *node)
 
 Professor *BinaryTree::get(std::string id)
 {
-    if(root == nullptr) return nullptr;
-    Professor* pointer = root;
-    while(pointer->getData().id != id || pointer != nullptr){
-        if(id == pointer->getData().id) return pointer;
-        else if(id < pointer->getData().id) pointer = pointer->getLeft();
-        else if(id > pointer->getData().id)pointer = pointer->getRight();
+    if (root == nullptr)
+        throw "Arbol vacio";
+    Professor *pointer = root;
+    while (pointer != nullptr || pointer->getData().id != id)
+    {
+        if (id == pointer->getData().id)
+            return pointer;
+        else if (id < pointer->getData().id)
+            pointer = pointer->getLeft();
+        else if (id > pointer->getData().id)
+            pointer = pointer->getRight();
     }
-    return nullptr;
+    throw "No encontrado";
 }
 
 void BinaryTree::modify(Professor *node, std::string newId, std::string newName)
@@ -156,11 +148,21 @@ void BinaryTree::modify(Professor *node, std::string newId, std::string newName)
     unlink(node);
     node->getData().id = newId;
     node->getData().name = newName;
-    Insert(node,root);
+    Insert(node, root);
 }
 
-void BinaryTree::unlink(Professor* node){
+void BinaryTree::unlink(Professor *node)
+{
+    if(node == root){
+        Professor *sucesor = getSucesor(node);
+        root = sucesor;
+        if(node->getLeft() != nullptr) sucesor->setLeft(node->getLeft());
+        if(node->getRight() != nullptr) sucesor->setRight(node->getRight());
+        return;
+    }
+
     Professor *padre = getParent(node);
+    
     if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
         Professor *sucesor = getSucesor(node);
@@ -259,7 +261,7 @@ Professor *BinaryTree::getParent(Professor *node)
     if (root != nullptr)
         queue.push_back(root);
 
-    //Se realiza el recorrido en inorden para mostrar la lista ordenada
+    //Se realiza el pointerrrido en inorden para mostrar la lista ordenada
     while (!queue.empty())
     {
         Professor *pointer = queue.front();
@@ -286,6 +288,104 @@ Professor *BinaryTree::getParent(Professor *node)
 
     return nullptr;
 }
+
+//-----------------Metodos de la lista ordenada de salones---------
+
+Salon *Salones::getHead()
+{
+    return head;
+}
+
+Salones::Salones(Salon *salon)
+{
+    head = salon;
+}
+
+void Salones::setHead(Salon *node)
+{
+    head = node;
+}
+
+Salon *Salones::get(std::string id)
+{
+    Salon *pointer = head;
+
+    while (pointer->getData().id != id)
+    {
+        pointer = pointer->getNext();
+    }
+
+    if (pointer->getData().id == id)
+        return pointer;
+    else
+        throw "No encontrado";
+}
+
+void Salones::add(Data data)
+{
+    Salon *node = new Salon(data);
+    Salon *pointer = head;
+    Salon *previous;
+
+    if (pointer != nullptr)
+    {
+
+        if (data.id < pointer->getData().id)
+        {
+            head = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
+            node->setNext(pointer);
+        }
+        else
+        {
+            do
+            {
+                previous = pointer;
+                pointer = pointer->getNext();
+                if (pointer == nullptr)
+                {
+                    previous->setNext(node);
+                    return;
+                }
+            } while (data.id > pointer->getData().id);
+            previous->setNext(node);
+            node->setNext(pointer);
+        }
+    }
+    else
+    {
+        head = node;
+    }
+}
+
+std::string Salones::getGraphic()
+{
+    std::string result;
+    Salon *pointer = head;
+
+    while (pointer != nullptr)
+    {
+        result.append("\n");
+        result.append(pointer->getData().id);
+        result.append("[ label = \" ");
+        result.append(pointer->getData().id);
+        result.append("---");
+        result.append(pointer->getData().name);
+        result.append("\" ];");
+
+        Salon *temp = pointer->getNext();
+        if (temp != nullptr)
+        {
+            result.append("\n");
+            result.append(pointer->getData().id);
+            result.append("->" + temp->getData().id);
+        }
+
+        pointer = temp;
+    }
+
+    return result;
+}
+
 //---------------Metodos de la lista circular--------------
 CircularList::CircularList()
 {
@@ -315,39 +415,42 @@ void CircularList::add(Data data)
     {
         first = temp;
         last = temp;
-        temp->setNext(temp);
+        first->setNext(last);
+        last->setNext(first);
     }
 }
 
 void CircularList::Insert(Course *node)
 {
-    Course *pointer = first;
-    Course *previous;
+    std::string comp = node->getData().id;
 
-    if (node->getData().name < pointer->getData().name)
+    if (comp < first->getData().id)
     {
-        first = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
-        node->setNext(pointer);
+        node->setNext(first);
+        first = node;
+        last->setNext(node);
     }
     else
     {
+        Course *pointer = first;
+        Course *previous;
+
         do
         {
-            //obtiene el nodo puntero siguiente y guarda el nodo puntero actual
             previous = pointer;
             pointer = pointer->getNext();
-
-            if (pointer == first)
-            {
-                //si el puntero siguiente ya es el ultimo entonces node será la nueva cola
-                previous->setNext(node);
-                node->setNext(first);
-                last = node;
-                return;
-            }
-        } while (node->getData().name > pointer->getData().name);
-        previous->setNext(node);
-        node->setNext(pointer);
+        } while (comp > pointer->getData().id && pointer->getNext() != first);
+        if (comp > pointer->getData().id)
+        { 
+            pointer->setNext(node);
+            last = node;
+            node->setNext(first);
+        }
+        else
+        {
+            node->setNext(pointer);
+            previous->setNext(node);
+        }
     }
 }
 
@@ -363,7 +466,7 @@ std::list<Data> CircularList::getList()
             result.push_back(pointer->getData());
             pointer = pointer->getNext();
 
-        } while (pointer != last);
+        } while (pointer != first);
     }
 
     return result;
@@ -375,7 +478,7 @@ std::string CircularList::getGraphic()
         return "null";
 
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = pointerrd, style = filled, fillcolor = seashell2];");
 
     Course *pointer = first;
     Course *flag;
@@ -386,6 +489,8 @@ std::string CircularList::getGraphic()
         result.append(pointer->getData().id);
         result.append(" ");
         result.append("[ label = \" ");
+        result.append(pointer->getData().id);
+        result.append("--");
         result.append(pointer->getData().name);
         result.append(" \" ]; \n ");
 
@@ -409,8 +514,9 @@ Course *CircularList::get(std::string id)
         if (pointer->getData().id == id)
             return pointer;
         pointer = pointer->getNext();
-    }while (pointer != first);
-    return nullptr;
+    } while (pointer != first);
+
+    throw "No encontrado";
 }
 
 void CircularList::modify(Course *node, std::string newId, std::string newName)
@@ -547,7 +653,7 @@ std::list<deuxData> doubleLinkedList::getList()
 std::string doubleLinkedList::getGraphic()
 {
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = pointerrd, style = filled, fillcolor = seashell2];");
     Build *pointer = first;
 
     while (pointer)
@@ -717,7 +823,7 @@ void arrayList::add(deuxData data)
 std::string arrayList::getGraphic()
 {
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2]; ");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = pointerrd, style = filled, fillcolor = seashell2]; ");
     Day *pointer = head;
 
     while (pointer != nullptr)
@@ -741,93 +847,6 @@ std::string arrayList::getGraphic()
 
     result.append(" \n ");
     result.append("}");
-
-    return result;
-}
-
-//-----------------Metodos de la lista ordenada de salones---------
-
-Salon *Salones::getHead()
-{
-    return head;
-}
-void Salones::setHead(Salon *node)
-{
-    head = node;
-}
-
-Salon* Salones::get(std::string id){
-    Salon *pointer = head;
-
-    while(pointer->getData().id != id){
-        pointer = pointer->getNext();
-    }
-
-    if(pointer->getData().id == id) return pointer;
-    else return nullptr;
-}
-
-void Salones::add(Data data)
-{
-    Salon *node = new Salon(data);
-    Salon *pointer = head;
-    Salon *previous;
-
-    if (pointer != nullptr)
-    {
-
-        if (data.id < pointer->getData().id)
-        {
-            head = node; //ya que el puntero se empieza con head si es menor entonces el nuevo sera la nueva cabeza
-            node->setNext(pointer);
-        }
-        else
-        {
-            do
-            {
-                previous = pointer;
-                pointer = pointer->getNext();
-                if (pointer == nullptr)
-                {
-                    previous->setNext(node);
-                    return;
-                }
-            } while (data.id > pointer->getData().id);
-            previous->setNext(node);
-            node->setNext(pointer);
-        }
-    }
-    else
-    {
-        head = node;
-    }
-}
-
-std::string Salones::getGraphic()
-{
-    std::string result;
-    Salon *pointer = head;
-
-    while (pointer != nullptr)
-    {
-        result.append("\n");
-        result.append(pointer->getData().id);
-        result.append("[ label = \" ");
-        result.append(pointer->getData().id);
-        result.append("|");
-        result.append(pointer->getData().name);
-        result.append("\" ];");
-
-        Salon *temp = pointer->getNext();
-        if (temp != nullptr)
-        {
-            result.append("\n");
-            result.append(pointer->getData().id);
-            result.append("->" + temp->getData().id);
-        }
-
-        pointer = temp;
-    }
 
     return result;
 }
@@ -901,7 +920,7 @@ void Horarios::add(deuxData node)
 std::string Horarios::getGraphic()
 {
     std::string result;
-    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = record, style = filled, fillcolor = seashell2];");
+    result.append("digraph grafica{ \n rankdir = TB; \n node[shape = pointerrd, style = filled, fillcolor = seashell2];");
     schedule *pointer = first;
 
     while (pointer)
