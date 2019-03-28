@@ -1,4 +1,5 @@
 #include "node.h"
+#include "list.h"
 
 // Here starts the  methods for Professor
 
@@ -77,6 +78,7 @@ Build::Build(deuxData data)
     this->data = data;
     up = nullptr;
     down = nullptr;
+    salones = new Salones();
 }
 
 Build *Build::getUp()
@@ -140,7 +142,7 @@ void Day::setMatrixNode(Matrix *node)
 
 Salon::Salon(Data data)
 {
-    data = data;
+    this->data = data;
     down = nullptr;
 }
 Data Salon::getData()

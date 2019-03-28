@@ -290,20 +290,22 @@ Professor *BinaryTree::getParent(Professor *node)
 }
 
 //-----------------Metodos de la lista ordenada de salones---------
-
-Salon *Salones::getHead()
+Salones::Salones()
 {
-    return head;
+    head = nullptr;
 }
 
-Salones::Salones(Salon *salon)
-{
-    head = salon;
-}
+std::list<Data> Salones::getList(){
+    std::list<Data> result;
+    Salon *pointer = head;
 
-void Salones::setHead(Salon *node)
-{
-    head = node;
+    while (pointer != nullptr)
+    {
+        result.push_back(pointer->getData());
+        pointer = pointer->getNext();
+    }
+
+    return result;
 }
 
 Salon *Salones::get(std::string id)

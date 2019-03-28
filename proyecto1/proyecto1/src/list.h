@@ -92,15 +92,11 @@ public:
 class Salones{
   private:
     Salon* head;
-    Salon* queue;
   
   public:
-    Salones(Salon* salon);
-    Salon* getHead();
-    void setHead(Salon* node);
-    Salon* getQueue();
+    Salones();
+    std::list<Data> getList();
     Salon* get(std::string id);
-    void setQueue(Salon* node);
     void add(Data data);
     std::string getGraphic();
 };
